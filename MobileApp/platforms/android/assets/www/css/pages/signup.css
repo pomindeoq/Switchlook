@@ -1,0 +1,29 @@
+﻿
+
+
+#terms {
+    margin-top:25%;
+    width:3vw;
+    height:3vw;
+}
+.terms-button-wrapper {
+    margin-top: 10%;
+}
+
+.terms-button-wrapper a {
+    font-size: 2.8vw;
+}
+
+.terms-button-wrapper p {
+    font-size: 2.8vw;
+}
+
+.upload-profile-picture {
+    margin-bottom: 10%;
+}
+
+.upload-profile-picture a {
+    font-size: 12vw;
+    text-decoration: none;
+    color: inherit;
+}

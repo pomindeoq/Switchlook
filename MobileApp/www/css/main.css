@@ -1,0 +1,339 @@
+﻿body {
+    padding-top: 12%;
+}
+
+
+/*  SECTIONS  */
+.section {
+    clear: both;
+    padding: 0px;
+    margin: 0px;
+}
+
+/*  COLUMN SETUP  */
+.col {
+    display: block;
+    float: left;
+    margin: 1% 0 1% 0%;
+}
+
+    .col:first-child {
+        margin-left: 0;
+    }
+
+/*  GROUPING  */
+.group:before,
+.group:after {
+    content: "";
+    display: table;
+}
+
+.group:after {
+    clear: both;
+}
+
+.group {
+    zoom: 1; /* For IE 6/7 */
+}
+/*  GRID OF TWELVE  */
+.span_12_of_12 {
+    width: 100%;
+}
+
+.span_11_of_12 {
+    width: 91.66%;
+}
+
+.span_10_of_12 {
+    width: 83.33%;
+}
+
+.span_9_of_12 {
+    width: 75%;
+}
+
+.span_8_of_12 {
+    width: 66.66%;
+}
+
+.span_7_of_12 {
+    width: 58.33%;
+}
+
+.span_6_of_12 {
+    width: 50%;
+}
+
+.span_5_of_12 {
+    width: 41.66%;
+}
+
+.span_4_of_12 {
+    width: 33.33%;
+}
+
+.span_3_of_12 {
+    width: 25%;
+}
+
+.span_2_of_12 {
+    width: 16.66%;
+}
+
+.span_1_of_12 {
+    width: 8.333%;
+}
+
+
+/* Top-Navigation */
+
+.navigation-top.bar {
+    background-color: #ffffff;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    border-bottom: 1px solid #999999;
+    z-index: 4;
+}
+
+.navigation-top.left {
+    font-size: 7.5vw;
+    text-align: center;
+}
+
+.navigation-top.left a {
+    text-decoration: none;
+    color: inherit;
+    position: absolute;
+    left: 3%;
+}
+
+.navigation-top.right {
+    font-size: 7.5vw;
+    text-align: center;
+}
+
+.navigation-top.right a {
+    text-decoration: none;
+    color: inherit;
+    position: absolute;
+    right: 3%;
+}
+
+.navigation-top.title {
+    font-size: 6.5vw;
+    font-weight: normal;
+    text-align: center;
+    line-height: 10vw;
+}
+
+/* Inputs */
+
+input[type=submit].black-half-btn {
+    color: #ffffff;
+    background: #2D3030;
+    border: 0 none;
+    -webkit-border-radius: 5px;
+    border-radius: 3px;
+}
+
+input.auto-size {
+    display: block;
+    border: none;
+    border-bottom: 1px solid #999999;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4%;
+    outline: 0;
+    font-size: 3vw;
+}
+
+input.auto-size:focus {
+    border-bottom: 2px solid #555555;
+}
+
+/* Alignments */
+
+.vertical-center {
+    min-height: 100%;  /* Fallback for vh unit */
+    min-height: 100vh; /* You might also want to use
+                        'height' property instead.
+                        
+                        Note that for percentage values of
+                        'height' or 'min-height' properties,
+                        the 'height' of the parent element
+                        should be specified explicitly.
+  
+                        In this case the parent of '.vertical-center'
+                        is the <body> element */
+
+    /* Make it a flex container */
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex; 
+  
+    /* Align the bootstrap's container vertically */
+    -webkit-box-align : center;
+    -webkit-align-items : center;
+    -moz-box-align : center;
+    -ms-flex-align : center;
+    align-items : center;
+  
+    /* In legacy web browsers such as Firefox 9
+     we need to specify the width of the flex container */
+    width: 100%;
+  
+    /* Also 'margin: 0 auto' doesn't have any effect on flex items in such web browsers
+     hence the bootstrap's container won't be aligned to the center anymore.
+  
+     Therefore, we should use the following declarations to get it centered again */
+    -webkit-box-pack : center;
+    -moz-box-pack : center;
+    -ms-flex-pack : center;
+    -webkit-justify-content : center;
+    justify-content : center;
+}
+
+/* Navigation */
+.navigation-bar {
+    width: 100%;
+    background-color: white;
+    overflow: auto;
+    position:fixed;
+    bottom:0;
+    border-top:2px solid #999999;
+}
+
+.navigation-bar a {
+    text-decoration:none;
+    float: left;
+    width: 20%;
+    text-align: center;
+    padding: 10px 0;
+    transition: all 0.3s ease;
+    color: darkcyan;
+    font-size: 8vw;
+}
+.text-allign-center {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+
+.select-gender {
+    font-size: 4vw;
+}
+/* Loading Overlay */
+#LoadingOverlay {
+    position: absolute;
+    display: none;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    background-color: rgba(226,226,226,0.3);
+    overflow: hidden;
+}
+
+#overlayText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 50px;
+    color: white;
+    margin-top: -12%;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+
+.loader {
+    border: 2vw solid #d6d6d6;
+    border-radius: 50%;
+    border-top: 2vw solid #3498db;
+    width: 15vw;
+    height: 15vw;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.toogle {
+    display: inline-block;
+    vertical-align: middle;
+}
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 6vw;
+    height: 3.4vw;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15%;
+}
+
+    /* Hide default HTML checkbox */
+    .switch input {
+        display: none;
+    }
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 2.6vw;
+        width: 2.6vw;
+        left: 0.4vw;
+        bottom: 0.4vw;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+input:checked + .slider {
+    background-color: darkcyan;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #008b8b;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(2.6vw);
+    -ms-transform: translateX(2.6vw);
+    transform: translateX(2.6vw);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+    .slider.round:before {
+        border-radius: 50%;
+    }

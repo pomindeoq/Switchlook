@@ -1,0 +1,47 @@
+﻿.login-btn {
+    text-align: center;
+    padding-top: 3%;
+}
+.signin-btn {
+    text-align: center;
+    width: 100%;
+    margin: 1% 1% 1% 0%;
+}
+
+.login-btn input[type=submit] {
+    width: 55%;
+    font-size: 3vw;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    text-transform:uppercase;
+}
+input[type=submit].signin-btn {
+    color: #ffffff;
+    background: #2D3030;
+    border: 0 none;
+    -webkit-border-radius: 5px;
+    border-radius: 3px;
+}
+
+.signin-btn input[type=submit] {
+    width: 100%;
+    font-size: 3.5vw;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    text-transform: capitalize;
+}
+
+.form-buttons {
+    margin-top: 3%;
+}
+
+.login-forgot-password {
+    font-size: 3vw;
+    text-align: center;
+    padding-top: 2%;
+}
+
+.login-forgot-password a {
+    text-decoration: none;
+    color: #6cc0c8
+}

@@ -1,0 +1,54 @@
+﻿.profile-section {
+    padding: 2%;
+    margin: 3%;
+    border-bottom: 2px solid #999999;
+}
+
+.profile-picture {
+    height: 25vw;
+    left: 0;
+    top: 0;
+    width: 25vw;
+    padding-left:10%
+}
+
+.image-content {
+    overflow: hidden;
+    
+}
+
+.name-content {
+    font-size: 3vw;
+    font-weight: normal;
+    text-align: center;
+}
+
+.user-info {
+    padding-top: 15%;
+}
+
+.username-content {
+    font-size: 4vw;
+    font-weight: normal;
+    text-align: center;
+}
+
+.rating-section {
+    padding-top: 50%;
+    font-size: 3em;
+}
+
+.rating-section a {
+    font-size: 6vw;
+    text-decoration: none;
+    color: inherit;
+    position: absolute;
+}
+
+.count-style {
+    font-size: 4vw;
+}
+
+.name-style {
+    font-size: 3vw;
+}
