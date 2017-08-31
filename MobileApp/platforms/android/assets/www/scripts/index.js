@@ -86,7 +86,39 @@ var NavigationTop = new NavigationTop();
 
         console.log(Pages);
 
-        
+
+
+
+
+        (function () {
+            $(document).on("click", "#signUpBtn", function (e) {
+                e.preventDefault();
+
+                var datastring = $('form#signUpForm').serialize();
+
+                alert(datastring);
+
+                var name = $('#name').val();
+
+                alert(name);
+
+                //jQuery.ajax({
+                //    type: "POST",
+                //    url: 'localhost:54443/api/account/register',
+                //    data: dataString,
+                //    cache: false,
+                //    async: true,
+                //    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //        alert(textStatus + ": " + errorThrown);
+                //    }
+                //}).done(function (returned) {
+                //    obj = JSON.parse(returned);
+                    
+                //});
+
+                console.log("signUpBtn");
+            });
+        }());
 
         // add router handler to hashchange event
         $(window).on('hashchange', router.start);

@@ -5,12 +5,12 @@
             <div class="upload-profile-picture">
                 <a href="#"><span class="icon icon-user-plus text-allign-center"></span></a>
             </div>
-            <form>
-                <input class="auto-size" type="text" id="name" placeholder="Full name">
-                <input class="auto-size" type="password" id="password" placeholder="Password">
-                <input class="auto-size" type="password" id="password" placeholder="Repeat password">
-                <input class="auto-size" type="email" id="email" placeholder="Email">
-                <input class="auto-size" type="text" id="account" placeholder="@username">
+            <form id="signUpForm">
+                <input class="auto-size" type="text" id="name" name="name" placeholder="Full name">
+                <input class="auto-size" type="password" name="password" placeholder="Password">
+                <input class="auto-size" type="password" name="passwordRepeat" placeholder="Repeat password">
+                <input class="auto-size" type="email" name="email" placeholder="Email">
+                <input class="auto-size" type="text" name="username" placeholder="@username">
                 <div class="terms-button-wrapper">
                     <div class="section group">
                         <div class="col span_2_of_12">
@@ -30,7 +30,7 @@
                     </div>
                     <div class="form-buttons">
                         <div class="login-btn">
-                            <input class="black-half-btn" type="submit" value="create profile">
+                            <input id="signUpBtn" class="black-half-btn" type="submit" value="create profile">
                         </div>
                     </div>
                 </div>
