@@ -16,6 +16,7 @@
         case "POST":
             jQuery.ajax({
                 type: "POST",
+                data: data,
                 url: 'http://localhost:54443/api/' + url,
                 cache: false,
                 async: async,
