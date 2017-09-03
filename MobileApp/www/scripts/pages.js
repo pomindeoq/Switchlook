@@ -37,7 +37,7 @@ Pages.prototype.GoBack = function() {
     }
 }
 
-Pages.prototype.GoTo = function(route) {
+Pages.prototype.GoTo = function (route) {
     router.load(route);
 }
 
