@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
+using NetEscapades.AspNetCore.SecurityHeaders;
 using WebApi.Models;
 
 namespace WebApi
@@ -43,6 +44,7 @@ namespace WebApi
                 .AddEntityFrameworkStores<WebApiDataContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddCustomHeaders();
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -70,7 +72,11 @@ namespace WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            var policyCollection = new HeaderPolicyCollection()
+                .AddDefaultSecurityHeaders()
+                .AddCustomHeader("Access-Control-Allow-Origin", "*");
 
+            app.UseCustomHeadersMiddleware(policyCollection);
 
             app.UseAuthentication();
 

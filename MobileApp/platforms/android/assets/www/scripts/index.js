@@ -4,6 +4,7 @@
 // and then run "window.location.reload()" in the JavaScript Console.
 var Pages = new Pages();
 var NavigationTop = new NavigationTop();
+var User = new User();
 
 
 (function () {
@@ -86,7 +87,9 @@ var NavigationTop = new NavigationTop();
 
         console.log(Pages);
 
-
+        if (User.IsAuthinticated === false) {
+            Pages.GoTo("/login");
+        }
 
 
 

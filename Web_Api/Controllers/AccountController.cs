@@ -86,5 +86,16 @@ namespace WebApi.Controllers
             return "false. not Authenticated";
         }
 
+        [Authorize]
+        [HttpGet, Route("isAuthenticated")]
+        public bool IsAuthenticated()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return true;
+            }
+            return false;
+        }
+
     }
 }
