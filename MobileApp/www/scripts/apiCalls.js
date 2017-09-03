@@ -44,7 +44,8 @@ function OnUnauthorizedApiAccess() {
     alert("Unauthorized");
 }
 
-function isUserAuthenticated() {
+function API_isUserAuthenticated() {
+    var result = false;
     callAPI(
         "GET",
         null,
@@ -52,6 +53,8 @@ function isUserAuthenticated() {
         false,
         function(returned) {
             alert(returned);
+            result = returned;
         }
     );
+    return result;
 }
