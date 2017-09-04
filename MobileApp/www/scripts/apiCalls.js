@@ -17,6 +17,7 @@
             jQuery.ajax({
                 type: "POST",
                 data: data,
+                contentType: "application/json",
                 url: 'http://localhost:54443/api/' + url,
                 cache: false,
                 async: async,
@@ -36,12 +37,54 @@ function OnApiError(XMLHttpRequest, textStatus, errorThrown) {
         OnUnauthorizedApiAccess();
         break;
     default:
-        alert(textStatus + ": " + errorThrown + " Code: " + XMLHttpRequest.status);
+        console.log(textStatus + ": " + errorThrown + " Code: " + XMLHttpRequest.status);
     }
 }
 
 function OnUnauthorizedApiAccess() {
-    alert("Unauthorized");
+    console.log("Unauthorized");
+}
+
+function API_signIn(data) {
+    callAPI(
+        "POST",
+        data,
+        "account/login",
+        true,
+        function (returned) {
+            var obj = JSON.parse(returned);
+            console.log(obj);
+
+            //Pages.GoTo("/main");
+        }
+    );
+}
+
+function API_registerAccount(data) {
+    callAPI(
+        "POST",
+        data,
+        "account/register",
+        true,
+        function(returned) {
+
+
+            // redirect to somewhere when user registers
+        }
+    );
+}
+
+
+function API_signOut() {
+    callAPI(
+        "GET",
+        null,
+        "account/SignOut",
+        true,
+        function(returned) {
+            Pages.GoTo("/login");
+        }
+    );
 }
 
 function API_isUserAuthenticated() {
@@ -52,7 +95,7 @@ function API_isUserAuthenticated() {
         "account/isAuthenticated",
         false,
         function(returned) {
-            alert(returned);
+            console.log(returned);
             result = returned;
         }
     );

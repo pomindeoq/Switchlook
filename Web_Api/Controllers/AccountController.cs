@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -23,24 +24,34 @@ namespace WebApi.Controllers
             _signInManager = signInManager;
         }
 
-        [HttpGet, Route("Login")]
+        [HttpPost, Route("login")]
         public async Task<string> Login([FromBody]LoginModel loginModel)
         {
-            var result = await _signInManager.PasswordSignInAsync(loginModel.Username, loginModel.Password, true, false);
             string response = "";
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
-                response = "Done";
-                
+                var result = await _signInManager.PasswordSignInAsync(loginModel.Username, loginModel.Password, true, false);
+                if (result.Succeeded)
+                {
+                    response = "Done";
+
+                }
+                else
+                {
+                    response = "Failed";
+                }
             }
             else
             {
-                response = "Failed";
+                var errors = ModelState.Select(x => x.Value.Errors)
+                    .Where(y => y.Count > 0)
+                    .ToList();
+                
             }
             return response;
         }
 
-        [HttpPost, Route("Register")]
+        [HttpPost, Route("register")]
         public async Task<string> Register([FromBody]RegisterModel registerModel)
         {
             string response = "";
@@ -63,6 +74,7 @@ namespace WebApi.Controllers
             else
             {
                 response = "Model not valid";
+                
             }
             return response;
         }
@@ -86,7 +98,6 @@ namespace WebApi.Controllers
             return "false. not Authenticated";
         }
 
-        [Authorize]
         [HttpGet, Route("isAuthenticated")]
         public bool IsAuthenticated()
         {

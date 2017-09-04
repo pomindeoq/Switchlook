@@ -1,5 +1,3 @@
 ﻿function User() {
-    this.isAuthinticated = function() {
-        API_isUserAuthenticated();
-    }
+    this.IsAuthinticated = API_isUserAuthenticated();
 }

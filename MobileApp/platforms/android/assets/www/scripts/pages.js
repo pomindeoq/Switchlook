@@ -41,6 +41,16 @@ Pages.prototype.GoTo = function (route) {
     router.load(route);
 }
 
+Pages.prototype.IsAuthToAccess = function (restricted, auth) {
+    if (restricted === true && auth === true) {
+        return true;
+    }else if (restricted === false) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 Pages.prototype.SwitchPage = function(route) {
     this.PreviousPage = this.CurrentPage;
     this.CurrentPage = route;
@@ -100,7 +110,7 @@ NavigationTop.prototype.ResetData = function() {
     this.Data = new NavigationTopData(false, '', false, '', false, '');
 };
 
-function Page(name, route, url, handler, showNavigationTop = true, navigationTopData = new NavigationTopData(), showNavigationBar = true) {
+function Page(name, route, url, handler, reqAuthentication = true, showNavigationTop = true, navigationTopData = new NavigationTopData(), showNavigationBar = true) {
     this.Url = url;
     this.Route = route;
     this.Name = name;
@@ -108,25 +118,31 @@ function Page(name, route, url, handler, showNavigationTop = true, navigationTop
     this.NavigationTopData = navigationTopData;
     this.NavigationBottom = { Show: showNavigationBar };
     this.Handler = handler;
+    this.ReqAuthentication = reqAuthentication;
 
+    var tempReqAuthentication = this.ReqAuthentication;
     var tempRoute = this.Route;
     var tempNavigationTopData = this.NavigationTopData;
     var tempShowNavigationTop = this.ShowNavigationTop;
     var tempHanlder = this.Handler, tempUrl = this.Url;
     router.addRoute(this.Route, function () {
-        Pages.SwitchPage(tempRoute);
-        ShowLoadingOverlay();
-        if (tempShowNavigationTop) {
-            NavigationTop.Show(tempNavigationTopData);
+
+        if (Pages.IsAuthToAccess(tempReqAuthentication, User.IsAuthinticated)) {
+            Pages.SwitchPage(tempRoute);
+            ShowLoadingOverlay();
+            if (tempShowNavigationTop) {
+                NavigationTop.Show(tempNavigationTopData);
+            } else {
+                NavigationTop.Hide();
+            }
+            $('#app').load(tempUrl,
+                function () {
+                    tempHanlder();
+                    HideLoadingOverlay();
+                });
         } else {
-            NavigationTop.Hide();
+            Pages.GoTo("/login");
         }
-        $('#app').load(tempUrl,
-            function () {
-                tempHanlder();
-                HideLoadingOverlay();
-            });
-        
     });
 }
 

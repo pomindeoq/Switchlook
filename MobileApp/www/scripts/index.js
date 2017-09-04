@@ -94,28 +94,27 @@ var User = new User();
                 e.preventDefault();
 
                 var datastring = $('form#signUpForm').serialize();
+                var jsonString = JSON.stringify(datastring);
 
-                alert(datastring);
-
-                var name = $('#name').val();
-
-                alert(name);
-
-                //jQuery.ajax({
-                //    type: "POST",
-                //    url: 'localhost:54443/api/account/register',
-                //    data: dataString,
-                //    cache: false,
-                //    async: true,
-                //    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                //        alert(textStatus + ": " + errorThrown);
-                //    }
-                //}).done(function (returned) {
-                //    obj = JSON.parse(returned);
-                    
-                //});
+                API_registerAccount(jsonString);
 
                 console.log("signUpBtn");
+            });
+        }());
+
+
+        (function () {
+            $(document).on("click", "#loginBtn", function (e) {
+                e.preventDefault();
+
+                var datastring = $('form#loginForm').serializeFormJSON();
+
+                var jsonStr = JSON.stringify(datastring);
+
+                API_signIn(jsonStr);
+
+
+                console.log("loginBtn");
             });
         }());
 

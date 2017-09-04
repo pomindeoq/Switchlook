@@ -127,9 +127,7 @@ function Page(name, route, url, handler, reqAuthentication = true, showNavigatio
     var tempHanlder = this.Handler, tempUrl = this.Url;
     router.addRoute(this.Route, function () {
 
-        var uAuth = User.isAuthinticated();
-
-        if (Pages.IsAuthToAccess(tempReqAuthentication, uAuth)) {
+        if (Pages.IsAuthToAccess(tempReqAuthentication, User.IsAuthinticated)) {
             Pages.SwitchPage(tempRoute);
             ShowLoadingOverlay();
             if (tempShowNavigationTop) {

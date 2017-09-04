@@ -35,7 +35,7 @@ var User = new User();
 
             var navigationTopData = new NavigationTopData(false, '', false, '', true, 'Switchlook');
 
-            var page = new Page("Main", "/main", "pages/main.html", handler, true, navigationTopData);
+            var page = new Page("Main", "/main", "pages/main.html", handler, true, true, navigationTopData);
             Pages.AddPage(page);
         }());
 
@@ -47,7 +47,7 @@ var User = new User();
 
             var navigationTopData = new NavigationTopData(true, '<span class="icon icon-arrow-left2"></span>', false, '', true, 'Login');
 
-            var page = new Page("Login", "/login", "pages/login/index.html", handler, true, navigationTopData);
+            var page = new Page("Login", "/login", "pages/login/index.html", handler, false, true, navigationTopData);
             Pages.AddPage(page);
         }());
 
@@ -59,7 +59,7 @@ var User = new User();
 
             var navigationTopData = new NavigationTopData(true, '<a href="#/settings"><span class="icon icon-menu"></span></a>', false, '', true, 'Profile');
 
-            var page = new Page("Profile", "/profile", "pages/profile/index.html", handler, true, navigationTopData);
+            var page = new Page("Profile", "/profile", "pages/profile/index.html", handler, true, true, navigationTopData);
             Pages.AddPage(page);
         }());
 
@@ -71,7 +71,7 @@ var User = new User();
 
             var navigationTopData = new NavigationTopData(true, '<a href="#/profile"><span class="icon icon-arrow-left2"></span></a>', false, '', true, 'Settings');
 
-            var page = new Page("Settings", "/settings", "pages/settings/index.html", handler, true, navigationTopData);
+            var page = new Page("Settings", "/settings", "pages/settings/index.html", handler, true, true, navigationTopData);
             Pages.AddPage(page);
         }());
 
@@ -81,15 +81,11 @@ var User = new User();
                 //
             };
 
-            var page = new Page("Signup", "/signup", "pages/signup/index.html", handler, false);
+            var page = new Page("Signup", "/signup", "pages/signup/index.html", handler, false, false);
             Pages.AddPage(page);
         }());
 
         console.log(Pages);
-
-        if (User.IsAuthinticated === false) {
-            Pages.GoTo("/login");
-        }
 
 
 
@@ -98,28 +94,34 @@ var User = new User();
                 e.preventDefault();
 
                 var datastring = $('form#signUpForm').serialize();
+                var jsonString = JSON.stringify(datastring);
 
-                alert(datastring);
+                var password = $('#password').val();
+                var passwordRepeat = $('#passwordRepeat').val();
 
-                var name = $('#name').val();
-
-                alert(name);
-
-                //jQuery.ajax({
-                //    type: "POST",
-                //    url: 'localhost:54443/api/account/register',
-                //    data: dataString,
-                //    cache: false,
-                //    async: true,
-                //    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                //        alert(textStatus + ": " + errorThrown);
-                //    }
-                //}).done(function (returned) {
-                //    obj = JSON.parse(returned);
-                    
-                //});
+                if (password === passwordRepeat) {
+                    API_registerAccount(jsonString);
+                } else {
+                    console.log("Passwords dont match");
+                }
 
                 console.log("signUpBtn");
+            });
+        }());
+
+
+        (function () {
+            $(document).on("click", "#loginBtn", function (e) {
+                e.preventDefault();
+
+                var datastring = $('form#loginForm').serializeFormJSON();
+
+                var jsonStr = JSON.stringify(datastring);
+
+                API_signIn(jsonStr);
+
+
+                console.log("loginBtn");
             });
         }());
 
