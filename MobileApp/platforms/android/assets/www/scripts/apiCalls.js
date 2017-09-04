@@ -14,7 +14,18 @@
             });
             break;
         case "POST":
-
+            jQuery.ajax({
+                type: "POST",
+                data: data,
+                url: 'http://localhost:54443/api/' + url,
+                cache: false,
+                async: async,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    OnApiError(XMLHttpRequest, textStatus, errorThrown);
+                }
+            }).done(function (returned) {
+                successHanlder(returned);
+            });
             break;
     }
 }
@@ -33,7 +44,8 @@ function OnUnauthorizedApiAccess() {
     alert("Unauthorized");
 }
 
-function isUserAuthenticated() {
+function API_isUserAuthenticated() {
+    var result = false;
     callAPI(
         "GET",
         null,
@@ -41,6 +53,8 @@ function isUserAuthenticated() {
         false,
         function(returned) {
             alert(returned);
+            result = returned;
         }
     );
+    return result;
 }
