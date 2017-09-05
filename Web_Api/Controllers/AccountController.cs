@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using WebApi.Models;
+using WebApi.Models.Response;
 
 namespace WebApi.Controllers
 {
@@ -25,66 +26,53 @@ namespace WebApi.Controllers
         }
 
         [HttpPost, Route("login")]
-        public async Task<string> Login([FromBody]LoginModel loginModel)
+        public async Task<LoginResponse> Login([FromBody]LoginModel loginModel)
         {
-            string response = "";
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.IsModelValid = ModelState.IsValid;
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(loginModel.Username, loginModel.Password, true, false);
-                if (result.Succeeded)
-                {
-                    response = "Done";
-
-                }
-                else
-                {
-                    response = "Failed";
-                }
+                loginResponse.Result = result;
             }
             else
             {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                    .Where(y => y.Count > 0)
-                    .ToList();
+                loginResponse.Errors = ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage));
                 
             }
-            return response;
+            return loginResponse;
         }
 
         [HttpPost, Route("register")]
-        public async Task<string> Register([FromBody]RegisterModel registerModel)
+        public async Task<RegisterResponse> Register([FromBody]RegisterModel registerModel)
         {
-            string response = "";
+            RegisterResponse registerResponse = new RegisterResponse();
+            registerResponse.IsModelValid = ModelState.IsValid;
             if (ModelState.IsValid)
             {
                 var user = new Account { UserName = registerModel.Username, Email = registerModel.Email };
                 var result = await _userManager.CreateAsync(user, registerModel.Password);
 
-               
-
                 if (result.Succeeded)
                 {
-                    response = "Done";
+                    await _signInManager.SignInAsync(user, true);
                 }
-                else
-                {
-                    response = "Failed";
-                }
+                registerResponse.Succeeded = result.Succeeded;
+                registerResponse.Errors = result.Errors.Select(v => v.Description);
             } 
             else
             {
-                response = "Model not valid";
-                
+                registerResponse.Errors = ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage));
+
             }
-            return response;
+            return registerResponse;
         }
 
         [Authorize]
-        [HttpGet, Route("SignOut")]
-        public async Task<string> SignOut()
+        [HttpGet, Route("signOut")]
+        public async void SignOut()
         {
             await _signInManager.SignOutAsync();
-            return "Signed out";
         }
 
         [Authorize]

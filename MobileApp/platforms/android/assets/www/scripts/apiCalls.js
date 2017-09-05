@@ -45,29 +45,27 @@ function OnUnauthorizedApiAccess() {
     console.log("Unauthorized");
 }
 
-function API_signIn(data) {
+function API_signIn(data, handler) {
     callAPI(
         "POST",
         data,
         "account/login",
         true,
         function (returned) {
-            var obj = JSON.parse(returned);
-            console.log(obj);
-
+            handler(returned);
             //Pages.GoTo("/main");
         }
     );
 }
 
-function API_registerAccount(data) {
+function API_registerAccount(data, handler) {
     callAPI(
         "POST",
         data,
         "account/register",
         true,
         function(returned) {
-
+            handler(returned);
 
             // redirect to somewhere when user registers
         }
@@ -79,9 +77,10 @@ function API_signOut() {
     callAPI(
         "GET",
         null,
-        "account/SignOut",
+        "account/signOut",
         true,
-        function(returned) {
+        function (returned) {
+            User.IsAuthinticated = false;
             Pages.GoTo("/login");
         }
     );

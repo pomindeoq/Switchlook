@@ -89,28 +89,42 @@ var User = new User();
 
 
 
+
+        
         (function () {
+
+            // Default registe call
             $(document).on("click", "#signUpBtn", function (e) {
                 e.preventDefault();
 
-                var datastring = $('form#signUpForm').serialize();
+                var datastring = $('form#signUpForm').serializeFormJSON();
                 var jsonString = JSON.stringify(datastring);
 
-                var password = $('#password').val();
-                var passwordRepeat = $('#passwordRepeat').val();
-
-                if (password === passwordRepeat) {
-                    API_registerAccount(jsonString);
-                } else {
-                    console.log("Passwords dont match");
-                }
+                API_registerAccount(
+                    jsonString,
+                    function (returned) {
+                        $("#errors").empty();
+                        if (returned.isModelValid) {
+                            if (returned.succeeded) {
+                                User.IsAuthinticated = true;
+                                Pages.GoTo("/main");
+                            } else {
+                                returned.errors.forEach(function (item) {
+                                    $("#errors").append("<p>" + item + "</p>");
+                                });
+                            }
+                        } else {
+                            returned.errors.forEach(function (item) {
+                                $("#errors").append("<p>" + item + "</p>");
+                            });
+                        }
+                    }
+                );
 
                 console.log("signUpBtn");
             });
-        }());
 
-
-        (function () {
+            // Default login call
             $(document).on("click", "#loginBtn", function (e) {
                 e.preventDefault();
 
@@ -118,10 +132,35 @@ var User = new User();
 
                 var jsonStr = JSON.stringify(datastring);
 
-                API_signIn(jsonStr);
+                API_signIn(
+                    jsonStr,
+                    function(returned) {
+                        console.log(returned);
+                        if (returned.isModelValid) {
+                            if (returned.result.succeeded) {
+                                User.IsAuthinticated = true;
+                                Pages.GoTo("/main");
+                            }
+                        } else {
+                            $("#errors").empty();
+                            returned.errors.forEach(function (item) {
+                                $("#errors").append("<p>" + item + "</p>");
+                            });
+                        }
+                    }
+                );
 
 
                 console.log("loginBtn");
+            });
+
+            // Sign out call
+            $(document).on("click", "#signOut", function (e) {
+                e.preventDefault();
+
+                API_signOut();
+               
+                console.log("signOutLink");
             });
         }());
 

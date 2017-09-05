@@ -26,6 +26,7 @@ namespace WebApi.Models
         [Compare("Password", ErrorMessage = "Confirm password doesn't match, Type again !")]
         public string PasswordRepeat { get; set; }
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
     }
 
