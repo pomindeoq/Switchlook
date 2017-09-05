@@ -100,6 +100,7 @@ namespace WebApi.Controllers
             }
             return false;
         }
+        /*
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
@@ -131,6 +132,6 @@ namespace WebApi.Controllers
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
                 return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
             }
-        }
+        }*/
     }
 }
