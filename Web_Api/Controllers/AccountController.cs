@@ -100,7 +100,10 @@ namespace WebApi.Controllers
             }
             return false;
         }
-        /*
+
+
+
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
