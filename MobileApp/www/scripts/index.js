@@ -93,7 +93,7 @@ var User = new User();
         
         (function () {
 
-            // Default registe call
+            // Default register call
             $(document).on("click", "#signUpBtn", function (e) {
                 e.preventDefault();
 

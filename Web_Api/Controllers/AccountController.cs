@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using WebApi.Models;
 using WebApi.Models.Response;
+using Microsoft.Extensions.Logging;
 
 namespace WebApi.Controllers
 {
@@ -18,12 +19,16 @@ namespace WebApi.Controllers
     {
         private readonly UserManager<Account> _userManager;
         private readonly SignInManager<Account> _signInManager;
-
-        public AccountController(UserManager<Account> userManager, SignInManager<Account> signInManager)
+        private readonly ILogger _logger;
+        public AccountController(UserManager<Account> userManager, SignInManager<Account> signInManager, ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
+
+        [TempData]
+        public string ErrorMessage { get; set; }
 
         [HttpPost, Route("login")]
         public async Task<LoginResponse> Login([FromBody]LoginModel loginModel)
@@ -95,6 +100,38 @@ namespace WebApi.Controllers
             }
             return false;
         }
+        /*
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            if (remoteError != null)
+            {
+                ErrorMessage = $"Error from external provider: {remoteError}";
+                return RedirectToAction(nameof(Login));
+            }
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
 
+            // Sign in the user with this external login provider if the user already has a login.
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
+               
+            }
+
+            else
+            {
+                // If the user does not have an account, then ask the user to create an account.
+                ViewData["ReturnUrl"] = returnUrl;
+                ViewData["LoginProvider"] = info.LoginProvider;
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
+            }
+        }*/
     }
 }
