@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using WebApi.Utils.ValidationAttributes;
 
 namespace WebApi.Models
 {
@@ -28,6 +29,9 @@ namespace WebApi.Models
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+        [BooleanRequired(true, ErrorMessage = "You have to agree to terms of use")]
+        public bool TermsOfUse { get; set; }
+        public bool ReceiveEmails { get; set; }
     }
 
     public class LoginModel
