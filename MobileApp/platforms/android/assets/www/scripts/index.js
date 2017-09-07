@@ -85,6 +85,17 @@ var User = new User();
             Pages.AddPage(page);
         }());
 
+        // SIGN IN
+        (function () {
+            var handler = function () {
+                FB.XFBML.parse();
+                //
+            };
+
+            var page = new Page("Signin", "/signin", "pages/signin/index.html", handler, false, false);
+            Pages.AddPage(page);
+        }());
+
         console.log(Pages);
 
 
