@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Data.Edm.Csdl;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using WebApi.Models;
 using WebApi.Models.Response;
 using Microsoft.Extensions.Logging;
@@ -78,7 +81,15 @@ namespace WebApi.Controllers
         public async void SignOut()
         {
             await _signInManager.SignOutAsync();
+            ClaimsPrincipal principal = new ClaimsPrincipal();
+            ExternalLoginInfo info = new ExternalLoginInfo(principal, "Facebook", "", "");
         }
+
+        //[HttpPost, Route("facebookSignIn")]
+        //public async Task FacebookSignIn()
+        //{
+        //    await _signInManager.ExternalLoginSignInAsync();
+        //}
 
         [Authorize]
         [HttpGet, Route("Restricted")]
