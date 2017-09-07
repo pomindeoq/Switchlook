@@ -111,14 +111,5 @@ namespace WebApi.Controllers
             }
             return false;
         }
-<<<<<<< HEAD
-
-
-
-
-       
-        
-=======
->>>>>>> bae79b63f77593e1de5b403c1b99564d339a01c8
     }
 }

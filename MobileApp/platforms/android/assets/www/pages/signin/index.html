@@ -9,15 +9,9 @@
             <div class="form-buttons">                 
                 <fb:login-button 
                     scope="public_profile,email,user_birthday"
-                    onlogin="checkLoginState();">
+                    onlogin="FBcheckLoginState();">
                 </fb:login-button>
-                <div id="gSignInWrapper">
-                    <span class="label">Sign in with:</span>
-                    <div id="customBtn" class="customGPlusSignIn">
-                        <span class="icon"></span>
-                        <span class="buttonText">Google</span>
-                    </div>
-                </div>
+                <div id="g-signin2" data-onsuccess="onSignIn"></div>
                 <div class="signin-btn">
                     <input class="signin-btn" type="submit" value="Login with email">
                 </div>

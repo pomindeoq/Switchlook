@@ -89,7 +89,7 @@ var User = new User();
         (function () {
             var handler = function () {
                 FB.XFBML.parse(); // Re-render fb button
-                //
+                googleRenderButton();
             };
 
             var page = new Page("Signin", "/signin", "pages/signin/index.html", handler, false, false);

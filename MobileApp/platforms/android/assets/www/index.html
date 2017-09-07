@@ -5,7 +5,9 @@
         Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
         For details, see http://go.microsoft.com/fwlink/?LinkID=617521
     -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:54443/api/ http://*.facebook.net/ https://www.facebook.com/ https://*.facebook.com/ http://*.facebook.com/ data: gap: https://ssl.gstatic.com 'unsafe-eval'; connect-src 'self' http://localhost:54443/api/; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:54443/api/ http://*.facebook.net/ https://www.facebook.com/ https://*.facebook.com/ http://*.facebook.com/ https://apis.google.com/js/platform.js https://apis.google.com/ https://accounts.google.com/ data: gap: https://ssl.gstatic.com 'unsafe-eval'; connect-src 'self' http://localhost:54443/api/; style-src 'self' 'unsafe-inline'; media-src *">
+        <!--google-->     
+        <meta name="google-signin-client_id" content="697330306989-6ur1rkdq2brslp5nvglurri3qj1025ut.apps.googleusercontent.com">               
         
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <meta name="format-detection" content="telephone=no">
@@ -30,8 +32,7 @@
         <!--Signin-->
         <link rel="stylesheet" type="text/css" href="css/pages/signin.css">
         
-
-        
+      
         <title>Switchlook</title>
     </head>
     <body>
@@ -77,7 +78,7 @@
     </div>
         
         
-
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/platformOverrides.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery-3.1.1.min.js"></script>
