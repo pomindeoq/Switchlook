@@ -88,7 +88,7 @@ var User = new User();
         // SIGN IN
         (function () {
             var handler = function () {
-                FB.XFBML.parse();
+                FB.XFBML.parse(); // Re-render fb button
                 //
             };
 
