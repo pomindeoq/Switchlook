@@ -45,6 +45,18 @@ function OnUnauthorizedApiAccess() {
     console.log("Unauthorized");
 }
 
+function API_signInFacebook(data, handler) {
+    callAPI(
+        "POST",
+        data,
+        "account/facebookSignIn",
+        true,
+        function (returned) {
+            handler(returned);
+        }
+    );
+}
+
 function API_signIn(data, handler) {
     callAPI(
         "POST",

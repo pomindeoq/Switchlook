@@ -41,4 +41,27 @@ namespace WebApi.Models
         [Required]
         public string Password { get; set; }
     }
+
+    public interface IFacebookLoginModel
+    {
+        string Id { get; set; }
+        string Name { get; set; }
+        string FirstName { get; set; }
+        string LastName { get; set; }
+        string Email { get; set; }
+    }
+
+    public class FacebookLoginModel : IFacebookLoginModel
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+    }
+
+    public class FacebookRegisterModel : FacebookLoginModel
+    {
+        public string Username { get; set; }
+    }
 }

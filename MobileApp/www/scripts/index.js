@@ -96,6 +96,17 @@ var User = new User();
             Pages.AddPage(page);
         }());
 
+        // EXTERNAL REGISTER CONFIRMATION
+        (function () {
+            var handler = function () {
+                //if (!User.ExternalRegisterConfirmation)
+                //    Pages.GoTo("/main");
+            };
+
+            var page = new Page("ExternalRegister", "/externalRegister", "pages/signin/registrationConfirmation.html", handler, false, false);
+            Pages.AddPage(page);
+        }());
+
         console.log(Pages);
 
 
@@ -143,6 +154,8 @@ var User = new User();
 
                 var jsonStr = JSON.stringify(datastring);
 
+                console.log(jsonStr);
+
                 API_signIn(
                     jsonStr,
                     function(returned) {
@@ -173,6 +186,16 @@ var User = new User();
                
                 console.log("signOutLink");
             });
+
+            // External register confirmation
+            $(document).on("click", "#regConfirmationBtn", function (e) {
+                e.preventDefault();
+
+                
+
+                console.log("ExternalRegisterConfirmationClick");
+            });
+
         }());
 
         // add router handler to hashchange event
