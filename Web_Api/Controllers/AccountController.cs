@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 using WebApi.Models;
 using WebApi.Models.Response;
 using Microsoft.Extensions.Logging;
+using WebApi.Utils;
 
 namespace WebApi.Controllers
 {
@@ -32,6 +33,60 @@ namespace WebApi.Controllers
 
         [TempData]
         public string ErrorMessage { get; set; }
+
+        [HttpPost, Route("facebookRegister")]
+        public async Task<ExternalLoginResponse> FacebookRegister([FromBody] FacebookRegisterModel facebookRegisterModel)
+        {
+            ExternalLoginResponse externalLoginResponse = new ExternalLoginResponse();
+            externalLoginResponse.IsModelValid = ModelState.IsValid;
+            if (ModelState.IsValid)
+            {
+                ExternalLoginInfo info = CustomExternalLoginInfo.FromFacebookLoginModel(facebookRegisterModel);
+                Account account = new Account{UserName = facebookRegisterModel.Username, Email = facebookRegisterModel.Email};
+
+                var result = await _userManager.CreateAsync(account);
+                if (result.Succeeded)
+                {
+                    result = await _userManager.AddLoginAsync(account, info);
+
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(account, true);
+                    }
+
+                }
+
+                externalLoginResponse.CreateResult = result;
+            }
+            else
+            {
+                externalLoginResponse.Errors = ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage));
+
+            }
+
+            return externalLoginResponse;
+        }
+
+        [HttpPost, Route("facebookSignIn")]
+        public async Task<ExternalLoginResponse> FacebookSignIn([FromBody] FacebookLoginModel facebookLoginModel)
+        {
+            ExternalLoginResponse externalLoginResponse = new ExternalLoginResponse();
+            externalLoginResponse.IsModelValid = ModelState.IsValid;
+            if (ModelState.IsValid)
+            {
+                ExternalLoginInfo info = CustomExternalLoginInfo.FromFacebookLoginModel(facebookLoginModel);
+
+                var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
+                externalLoginResponse.IsRegistered = result.Succeeded;
+                externalLoginResponse.Result = result;
+            }
+            else
+            {
+                externalLoginResponse.Errors = ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage));
+
+            }
+            return externalLoginResponse;
+        }
 
         [HttpPost, Route("login")]
         public async Task<LoginResponse> Login([FromBody]LoginModel loginModel)
@@ -84,12 +139,6 @@ namespace WebApi.Controllers
             ClaimsPrincipal principal = new ClaimsPrincipal();
             ExternalLoginInfo info = new ExternalLoginInfo(principal, "Facebook", "", "");
         }
-
-        //[HttpPost, Route("facebookSignIn")]
-        //public async Task FacebookSignIn()
-        //{
-        //    await _signInManager.ExternalLoginSignInAsync();
-        //}
 
         [Authorize]
         [HttpGet, Route("Restricted")]

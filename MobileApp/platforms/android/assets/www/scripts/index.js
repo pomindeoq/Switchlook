@@ -89,10 +89,25 @@ var User = new User();
         (function () {
             var handler = function () {
                 FB.XFBML.parse(); // Re-render fb button
+<<<<<<< HEAD
                 googleRenderButton();
+=======
+                //
+>>>>>>> 8d03da5f350771acbc22837422e7d392607c6c22
             };
 
             var page = new Page("Signin", "/signin", "pages/signin/index.html", handler, false, false);
+            Pages.AddPage(page);
+        }());
+
+        // EXTERNAL REGISTER CONFIRMATION
+        (function () {
+            var handler = function () {
+                //if (!User.ExternalRegisterConfirmation)
+                //    Pages.GoTo("/main");
+            };
+
+            var page = new Page("ExternalRegister", "/externalRegister", "pages/signin/registrationConfirmation.html", handler, false, false);
             Pages.AddPage(page);
         }());
 
@@ -143,6 +158,8 @@ var User = new User();
 
                 var jsonStr = JSON.stringify(datastring);
 
+                console.log(jsonStr);
+
                 API_signIn(
                     jsonStr,
                     function(returned) {
@@ -173,6 +190,16 @@ var User = new User();
                
                 console.log("signOutLink");
             });
+
+            // External register confirmation
+            $(document).on("click", "#regConfirmationBtn", function (e) {
+                e.preventDefault();
+
+                
+
+                console.log("ExternalRegisterConfirmationClick");
+            });
+
         }());
 
         // add router handler to hashchange event
