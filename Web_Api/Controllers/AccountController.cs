@@ -31,9 +31,6 @@ namespace WebApi.Controllers
             _logger = logger;
         }
 
-        [TempData]
-        public string ErrorMessage { get; set; }
-
         [HttpPost, Route("facebookRegister")]
         public async Task<ExternalLoginResponse> FacebookRegister([FromBody] FacebookRegisterModel facebookRegisterModel)
         {
