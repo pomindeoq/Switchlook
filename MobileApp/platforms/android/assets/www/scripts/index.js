@@ -4,6 +4,7 @@
 // and then run "window.location.reload()" in the JavaScript Console.
 var Pages = new Pages();
 var NavigationTop = new NavigationTop();
+var API = new WebApi();
 var User = new User();
 
 
@@ -89,11 +90,7 @@ var User = new User();
         (function () {
             var handler = function () {
                 FB.XFBML.parse(); // Re-render fb button
-<<<<<<< HEAD
                 googleRenderButton();
-=======
-                //
->>>>>>> 8d03da5f350771acbc22837422e7d392607c6c22
             };
 
             var page = new Page("Signin", "/signin", "pages/signin/index.html", handler, false, false);
@@ -103,8 +100,8 @@ var User = new User();
         // EXTERNAL REGISTER CONFIRMATION
         (function () {
             var handler = function () {
-                //if (!User.ExternalRegisterConfirmation)
-                //    Pages.GoTo("/main");
+                if (!User.ExternalRegisterConfirmation)
+                    Pages.GoTo("/main");
             };
 
             var page = new Page("ExternalRegister", "/externalRegister", "pages/signin/registrationConfirmation.html", handler, false, false);
@@ -126,7 +123,7 @@ var User = new User();
                 var datastring = $('form#signUpForm').serializeFormJSON();
                 var jsonString = JSON.stringify(datastring);
 
-                API_registerAccount(
+                API.RegisterAccount(
                     jsonString,
                     function (returned) {
                         $("#errors").empty();
@@ -159,8 +156,8 @@ var User = new User();
                 var jsonStr = JSON.stringify(datastring);
 
                 console.log(jsonStr);
-
-                API_signIn(
+                
+                API.SignIn(
                     jsonStr,
                     function(returned) {
                         console.log(returned);
@@ -186,7 +183,7 @@ var User = new User();
             $(document).on("click", "#signOut", function (e) {
                 e.preventDefault();
 
-                API_signOut();
+                API.SignOut();
                
                 console.log("signOutLink");
             });
@@ -195,7 +192,7 @@ var User = new User();
             $(document).on("click", "#regConfirmationBtn", function (e) {
                 e.preventDefault();
 
-                
+               
 
                 console.log("ExternalRegisterConfirmationClick");
             });

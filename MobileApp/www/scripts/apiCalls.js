@@ -1,37 +1,41 @@
-﻿function callAPI(type, data, url, async = true, successHanlder) {
-    switch(type) {
-        case "GET":
-            jQuery.ajax({
-                type: "GET",
-                url: 'http://localhost:54443/api/' + url,
-                cache: false,
-                async: async,
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    OnApiError(XMLHttpRequest, textStatus, errorThrown);
-                }
-            }).done(function (returned) {
-                successHanlder(returned);
-            });
-            break;
-        case "POST":
-            jQuery.ajax({
-                type: "POST",
-                data: data,
-                contentType: "application/json",
-                url: 'http://localhost:54443/api/' + url,
-                cache: false,
-                async: async,
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    OnApiError(XMLHttpRequest, textStatus, errorThrown);
-                }
-            }).done(function (returned) {
-                successHanlder(returned);
-            });
-            break;
+﻿function WebApi() {
+
+}
+
+WebApi.prototype.Call = function(type, data, url, async = true, successHanlder) {
+    switch (type) {
+    case "GET":
+        jQuery.ajax({
+            type: "GET",
+            url: 'http://localhost:54443/api/' + url,
+            cache: false,
+            async: async,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                OnApiError(XMLHttpRequest, textStatus, errorThrown);
+            }
+        }).done(function (returned) {
+            successHanlder(returned);
+        });
+        break;
+    case "POST":
+        jQuery.ajax({
+            type: "POST",
+            data: data,
+            contentType: "application/json",
+            url: 'http://localhost:54443/api/' + url,
+            cache: false,
+            async: async,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                this.OnError(XMLHttpRequest, textStatus, errorThrown);
+            }
+        }).done(function (returned) {
+            successHanlder(returned);
+        });
+        break;
     }
 }
 
-function OnApiError(XMLHttpRequest, textStatus, errorThrown) {
+WebApi.prototype.OnError = function (XMLHttpRequest, textStatus, errorThrown) {
     switch (XMLHttpRequest.status) {
     case 401:
         OnUnauthorizedApiAccess();
@@ -41,12 +45,12 @@ function OnApiError(XMLHttpRequest, textStatus, errorThrown) {
     }
 }
 
-function OnUnauthorizedApiAccess() {
+WebApi.prototype.OnUnauthorizedAccess = function() {
     console.log("Unauthorized");
 }
 
-function API_signInFacebook(data, handler) {
-    callAPI(
+WebApi.prototype.SignInFacebook = function (data, handler) {
+    this.Call(
         "POST",
         data,
         "account/facebookSignIn",
@@ -57,8 +61,8 @@ function API_signInFacebook(data, handler) {
     );
 }
 
-function API_signIn(data, handler) {
-    callAPI(
+WebApi.prototype.SignIn = function (data, handler) {
+    this.Call(
         "POST",
         data,
         "account/login",
@@ -70,13 +74,13 @@ function API_signIn(data, handler) {
     );
 }
 
-function API_registerAccount(data, handler) {
-    callAPI(
+WebApi.prototype.RegisterAccount = function (data, handler) {
+    this.Call(
         "POST",
         data,
         "account/register",
         true,
-        function(returned) {
+        function (returned) {
             handler(returned);
 
             // redirect to somewhere when user registers
@@ -84,9 +88,8 @@ function API_registerAccount(data, handler) {
     );
 }
 
-
-function API_signOut() {
-    callAPI(
+WebApi.prototype.SignOut = function() {
+    this.Call(
         "GET",
         null,
         "account/signOut",
@@ -98,14 +101,14 @@ function API_signOut() {
     );
 }
 
-function API_isUserAuthenticated() {
+WebApi.prototype.IsUserAuthenticated = function() {
     var result = false;
-    callAPI(
+    this.Call(
         "GET",
         null,
         "account/isAuthenticated",
         false,
-        function(returned) {
+        function (returned) {
             console.log(returned);
             result = returned;
         }

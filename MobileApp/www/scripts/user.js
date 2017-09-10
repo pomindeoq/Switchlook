@@ -1,5 +1,5 @@
 ﻿function User() {
-    this.IsAuthinticated = API_isUserAuthenticated();
+    this.IsAuthinticated = API.IsUserAuthenticated();
     this.ExternalRegisterConfirmation = false;
     this.ExternalLoginData = null;
 }

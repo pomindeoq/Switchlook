@@ -39,7 +39,7 @@ function statusChangeCallback(response) {
 
                 var jsonString = JSON.stringify(data);
                 console.log(jsonString);
-                API_signInFacebook(
+                API.SignInFacebook(
                     jsonString,
                     function(returned) {
                         if (returned.isModelValid) {
