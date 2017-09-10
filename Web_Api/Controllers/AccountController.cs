@@ -54,6 +54,7 @@ namespace WebApi.Controllers
                 }
 
                 externalLoginResponse.CreateResult = result;
+                externalLoginResponse.Errors = result.Errors.Select(x => x.Description);
             }
             else
             {

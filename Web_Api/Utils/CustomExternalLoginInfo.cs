@@ -26,7 +26,7 @@ namespace WebApi.Utils
                 claimsPrincipal,
                 "Facebook",
                 loginModel.Id,
-                loginModel.Name
+                "Facebook"
             );
 
             return info;

@@ -16,6 +16,33 @@ window.fbAsyncInit = function () {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
+
+function facebook_getUserData(callback) {
+    FB.getLoginStatus(function (response) {
+        if (response.status === 'connected') {
+            FB.api(
+                '/me',
+                'GET',
+                { "fields": "id,name,first_name,last_name,email" },
+                function (response2) {
+                    console.log(response2);
+                    var data = {
+                        Id: response2.id,
+                        Name: response2.name,
+                        FirstName: response2.first_name,
+                        LastName: response2.last_name,
+                        Email: response2.email
+                    };
+                    callback(data);
+                }
+            );
+            console.log('Logged in and authenticated');
+        } else {
+            console.log('Not autheticated');
+        }
+    });
+}
+
 function statusChangeCallback(response) {
     console.log(response);
     if (response.status === 'connected') {

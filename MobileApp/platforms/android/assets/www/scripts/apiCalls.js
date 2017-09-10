@@ -51,6 +51,18 @@ WebApi.prototype.OnUnauthorizedAccess = function() {
     console.log("Unauthorized");
 }
 
+WebApi.prototype.FacebookRegister = function(data, handler) {
+    this.Call(
+        "POST",
+        data,
+        "account/facebookRegister",
+        true,
+        function (returned) {
+            handler(returned);
+        }
+    );
+}
+
 WebApi.prototype.SignInFacebook = function (data, handler) {
     this.Call(
         "POST",

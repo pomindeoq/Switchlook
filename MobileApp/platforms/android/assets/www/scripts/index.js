@@ -137,6 +137,8 @@ var User = new User();
                 datastring.ReceiveEmails = receiveEmails;
                 var jsonString = JSON.stringify(datastring);
 
+                console.log(jsonString);
+
                 API.RegisterAccount(
                     jsonString,
                     function (returned) {
@@ -206,7 +208,44 @@ var User = new User();
             $(document).on("click", "#regConfirmationBtn", function (e) {
                 e.preventDefault();
 
-               
+                if (User.ExternalRegisterConfirmation) {
+
+                    facebook_getUserData(function(data) {
+                        data.Username = $('#username').val();
+
+
+
+
+                        var jsonStr = JSON.stringify(data);
+
+                        console.log(jsonStr);
+
+                        API.FacebookRegister(
+                            jsonStr,
+                            function (returned) {
+                                $("#errors").empty();
+                                console.log(returned);
+                                if (returned.isModelValid) {
+                                    if (returned.createResult.succeeded) {
+                                        User.IsAuthinticated = true;
+                                        Pages.GoTo("/main");
+                                    } else {
+                                        returned.errors.forEach(function (item) {
+                                            $("#errors").append("<p>" + item + "</p>");
+                                        });
+                                    }
+                                } else {
+                                    $("#errors").empty();
+                                    returned.errors.forEach(function (item) {
+                                        $("#errors").append("<p>" + item + "</p>");
+                                    });
+                                }
+                            }
+                        );
+                    });
+
+                    
+                }
 
                 console.log("ExternalRegisterConfirmationClick");
             });
