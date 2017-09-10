@@ -121,6 +121,20 @@ var User = new User();
                 e.preventDefault();
 
                 var datastring = $('form#signUpForm').serializeFormJSON();
+                
+
+                var termsOfUse = false;
+
+                if ($('#TermsOfUse').is(":checked")) {
+                    termsOfUse = true;
+                }
+                datastring.TermsOfUse = termsOfUse;
+                var receiveEmails = false;
+
+                if ($('#ReceiveEmails').is(":checked")) {
+                    receiveEmails = true;
+                }
+                datastring.ReceiveEmails = receiveEmails;
                 var jsonString = JSON.stringify(datastring);
 
                 API.RegisterAccount(

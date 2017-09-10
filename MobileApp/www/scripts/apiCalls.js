@@ -2,6 +2,16 @@
 
 }
 
+WebApi.prototype.OnError = function (XMLHttpRequest, textStatus, errorThrown) {
+    switch (XMLHttpRequest.status) {
+    case 401:
+        this.OnUnauthorizedAccess();
+        break;
+    default:
+        console.log(textStatus + ": " + errorThrown + " Code: " + XMLHttpRequest.status);
+    }
+}
+
 WebApi.prototype.Call = function(type, data, url, async = true, successHanlder) {
     switch (type) {
     case "GET":
@@ -11,7 +21,7 @@ WebApi.prototype.Call = function(type, data, url, async = true, successHanlder) 
             cache: false,
             async: async,
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                OnApiError(XMLHttpRequest, textStatus, errorThrown);
+                API.OnError(XMLHttpRequest, textStatus, errorThrown);
             }
         }).done(function (returned) {
             successHanlder(returned);
@@ -26,7 +36,7 @@ WebApi.prototype.Call = function(type, data, url, async = true, successHanlder) 
             cache: false,
             async: async,
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                this.OnError(XMLHttpRequest, textStatus, errorThrown);
+                API.OnError(XMLHttpRequest, textStatus, errorThrown);
             }
         }).done(function (returned) {
             successHanlder(returned);
@@ -35,15 +45,7 @@ WebApi.prototype.Call = function(type, data, url, async = true, successHanlder) 
     }
 }
 
-WebApi.prototype.OnError = function (XMLHttpRequest, textStatus, errorThrown) {
-    switch (XMLHttpRequest.status) {
-    case 401:
-        OnUnauthorizedApiAccess();
-        break;
-    default:
-        console.log(textStatus + ": " + errorThrown + " Code: " + XMLHttpRequest.status);
-    }
-}
+
 
 WebApi.prototype.OnUnauthorizedAccess = function() {
     console.log("Unauthorized");
