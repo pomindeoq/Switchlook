@@ -42,7 +42,7 @@ namespace WebApi.Models
         public string Password { get; set; }
     }
 
-    public interface IFacebookLoginModel
+    public interface IExternalLoginModel
     {
         string Id { get; set; }
         string Name { get; set; }
@@ -51,7 +51,7 @@ namespace WebApi.Models
         string Email { get; set; }
     }
 
-    public class FacebookLoginModel : IFacebookLoginModel
+    public class FacebookLoginModel : IExternalLoginModel
     {
         public string Id { get; set; }
         public string Name { get; set; }

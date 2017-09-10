@@ -38,7 +38,7 @@ namespace WebApi.Controllers
             externalLoginResponse.IsModelValid = ModelState.IsValid;
             if (ModelState.IsValid)
             {
-                ExternalLoginInfo info = CustomExternalLoginInfo.FromFacebookLoginModel(facebookRegisterModel);
+                ExternalLoginInfo info = CustomExternalLoginInfo.FromLoginModel(facebookRegisterModel);
                 Account account = new Account{UserName = facebookRegisterModel.Username, Email = facebookRegisterModel.Email};
 
                 var result = await _userManager.CreateAsync(account);
@@ -71,7 +71,7 @@ namespace WebApi.Controllers
             externalLoginResponse.IsModelValid = ModelState.IsValid;
             if (ModelState.IsValid)
             {
-                ExternalLoginInfo info = CustomExternalLoginInfo.FromFacebookLoginModel(facebookLoginModel);
+                ExternalLoginInfo info = CustomExternalLoginInfo.FromLoginModel(facebookLoginModel);
 
                 var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
                 externalLoginResponse.IsRegistered = result.Succeeded;
