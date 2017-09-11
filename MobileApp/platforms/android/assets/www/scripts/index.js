@@ -210,12 +210,13 @@ var User = new User();
 
                 if (User.ExternalRegisterConfirmation) {
 
-                    facebook_getUserData(function(data) {
-                        data.Username = $('#username').val();
+                    facebook_getUserAccessToken(function(token) {
+                        var username = $('#username').val();
 
-
-
-
+                        var data = {
+                            AccessToken: token,
+                            Username: username
+                        }
                         var jsonStr = JSON.stringify(data);
 
                         console.log(jsonStr);
@@ -242,7 +243,9 @@ var User = new User();
                                 }
                             }
                         );
+
                     });
+                    
 
                     
                 }

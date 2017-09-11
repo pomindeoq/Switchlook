@@ -10,9 +10,8 @@ namespace WebApi.Utils
 {
     public class CustomExternalLoginInfo
     {
-        public static ExternalLoginInfo FromLoginModel(IExternalLoginModel loginModel)
+        public static ExternalLoginInfo FromLoginModel(string issuer, IExternalDataModel loginModel)
         {
-            string issuer = "Facebook";
             var claims = new List<Claim> {
                 new Claim(ClaimTypes.NameIdentifier, loginModel.Id, ClaimValueTypes.String, issuer),
                 new Claim(ClaimTypes.Email, loginModel.Email, ClaimValueTypes.String, issuer),
@@ -24,9 +23,9 @@ namespace WebApi.Utils
             var claimsPrincipal = new ClaimsPrincipal(identity);
             ExternalLoginInfo info = new ExternalLoginInfo(
                 claimsPrincipal,
-                "Facebook",
+                issuer,
                 loginModel.Id,
-                "Facebook"
+                issuer
             );
 
             return info;

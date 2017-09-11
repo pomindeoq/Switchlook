@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using WebApi.Utils.ValidationAttributes;
 
 namespace WebApi.Models
@@ -42,7 +44,7 @@ namespace WebApi.Models
         public string Password { get; set; }
     }
 
-    public interface IExternalLoginModel
+    public interface IExternalDataModel
     {
         string Id { get; set; }
         string Name { get; set; }
@@ -51,17 +53,33 @@ namespace WebApi.Models
         string Email { get; set; }
     }
 
-    public class FacebookLoginModel : IExternalLoginModel
+    public class FacebookDataModel : IExternalDataModel
     {
+        [JsonProperty("id")]
         public string Id { get; set; }
+        [JsonProperty("name")]
         public string Name { get; set; }
+        [JsonProperty("first_name")]
         public string FirstName { get; set; }
+        [JsonProperty("last_name")]
         public string LastName { get; set; }
+        [JsonProperty("email")]
         public string Email { get; set; }
     }
 
-    public class FacebookRegisterModel : FacebookLoginModel
+    public interface IExternalLoginModel
     {
+        string AccessToken { get; set; }
+    }
+
+    public class FacebookRegisterModel : IExternalLoginModel
+    {
+        public string AccessToken { get; set; }
         public string Username { get; set; }
+    }
+
+    public class FacebookLoginModel : IExternalLoginModel
+    {
+        public string AccessToken { get; set; }
     }
 }
