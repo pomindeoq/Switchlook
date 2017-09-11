@@ -75,6 +75,7 @@ function FBcheckLoginState() {
     });
 };
  // Google button //
+
 function onSuccess(googleUser) {
     console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
 }
@@ -85,12 +86,12 @@ function onFailure(error) {
 function googleRenderButton() {
     gapi.signin2.render('g-signin2', {
         'scope': 'profile email',
-        'width': 240,
-        'height': 50,
+        'width': 167, 
+        'height': 28,
         'longtitle': true,
         'theme': 'dark',
         'onsuccess': onSignIn,
-        'onfailure': onFailure
+        'onfailure': onFailure,        
     });
 }
 
