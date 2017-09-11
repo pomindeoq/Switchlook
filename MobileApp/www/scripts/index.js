@@ -4,6 +4,7 @@
 // and then run "window.location.reload()" in the JavaScript Console.
 var Pages = new Pages();
 var NavigationTop = new NavigationTop();
+var API = new WebApi();
 var User = new User();
 
 
@@ -99,8 +100,8 @@ var User = new User();
         // EXTERNAL REGISTER CONFIRMATION
         (function () {
             var handler = function () {
-                //if (!User.ExternalRegisterConfirmation)
-                //    Pages.GoTo("/main");
+                if (!User.ExternalRegisterConfirmation)
+                    Pages.GoTo("/main");
             };
 
             var page = new Page("ExternalRegister", "/externalRegister", "pages/signin/registrationConfirmation.html", handler, false, false);
@@ -120,9 +121,25 @@ var User = new User();
                 e.preventDefault();
 
                 var datastring = $('form#signUpForm').serializeFormJSON();
+                
+
+                var termsOfUse = false;
+
+                if ($('#TermsOfUse').is(":checked")) {
+                    termsOfUse = true;
+                }
+                datastring.TermsOfUse = termsOfUse;
+                var receiveEmails = false;
+
+                if ($('#ReceiveEmails').is(":checked")) {
+                    receiveEmails = true;
+                }
+                datastring.ReceiveEmails = receiveEmails;
                 var jsonString = JSON.stringify(datastring);
 
-                API_registerAccount(
+                console.log(jsonString);
+
+                API.RegisterAccount(
                     jsonString,
                     function (returned) {
                         $("#errors").empty();
@@ -155,8 +172,8 @@ var User = new User();
                 var jsonStr = JSON.stringify(datastring);
 
                 console.log(jsonStr);
-
-                API_signIn(
+                
+                API.SignIn(
                     jsonStr,
                     function(returned) {
                         console.log(returned);
@@ -182,7 +199,7 @@ var User = new User();
             $(document).on("click", "#signOut", function (e) {
                 e.preventDefault();
 
-                API_signOut();
+                API.SignOut();
                
                 console.log("signOutLink");
             });
@@ -191,7 +208,47 @@ var User = new User();
             $(document).on("click", "#regConfirmationBtn", function (e) {
                 e.preventDefault();
 
-                
+                if (User.ExternalRegisterConfirmation) {
+
+                    facebook_getUserAccessToken(function(token) {
+                        var username = $('#username').val();
+
+                        var data = {
+                            AccessToken: token,
+                            Username: username
+                        }
+                        var jsonStr = JSON.stringify(data);
+
+                        console.log(jsonStr);
+
+                        API.FacebookRegister(
+                            jsonStr,
+                            function (returned) {
+                                $("#errors").empty();
+                                console.log(returned);
+                                if (returned.isModelValid) {
+                                    if (returned.createResult.succeeded) {
+                                        User.IsAuthinticated = true;
+                                        Pages.GoTo("/main");
+                                    } else {
+                                        returned.errors.forEach(function (item) {
+                                            $("#errors").append("<p>" + item + "</p>");
+                                        });
+                                    }
+                                } else {
+                                    $("#errors").empty();
+                                    returned.errors.forEach(function (item) {
+                                        $("#errors").append("<p>" + item + "</p>");
+                                    });
+                                }
+                            }
+                        );
+
+                    });
+                    
+
+                    
+                }
 
                 console.log("ExternalRegisterConfirmationClick");
             });

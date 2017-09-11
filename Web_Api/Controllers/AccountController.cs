@@ -31,9 +31,6 @@ namespace WebApi.Controllers
             _logger = logger;
         }
 
-        [TempData]
-        public string ErrorMessage { get; set; }
-
         [HttpPost, Route("facebookRegister")]
         public async Task<ExternalLoginResponse> FacebookRegister([FromBody] FacebookRegisterModel facebookRegisterModel)
         {
@@ -41,12 +38,15 @@ namespace WebApi.Controllers
             externalLoginResponse.IsModelValid = ModelState.IsValid;
             if (ModelState.IsValid)
             {
-                ExternalLoginInfo info = CustomExternalLoginInfo.FromFacebookLoginModel(facebookRegisterModel);
-                Account account = new Account{UserName = facebookRegisterModel.Username, Email = facebookRegisterModel.Email};
+                FacebookDataModel facebookData = await Facebook.GetUserLoginData(facebookRegisterModel.AccessToken);
+
+                ExternalLoginInfo info = CustomExternalLoginInfo.FromLoginModel("Facebook", facebookData);
+                Account account = new Account{UserName = facebookRegisterModel.Username, Email = facebookData.Email};
 
                 var result = await _userManager.CreateAsync(account);
                 if (result.Succeeded)
                 {
+
                     result = await _userManager.AddLoginAsync(account, info);
 
                     if (result.Succeeded)
@@ -57,6 +57,7 @@ namespace WebApi.Controllers
                 }
 
                 externalLoginResponse.CreateResult = result;
+                externalLoginResponse.Errors = result.Errors.Select(x => x.Description);
             }
             else
             {
@@ -74,7 +75,8 @@ namespace WebApi.Controllers
             externalLoginResponse.IsModelValid = ModelState.IsValid;
             if (ModelState.IsValid)
             {
-                ExternalLoginInfo info = CustomExternalLoginInfo.FromFacebookLoginModel(facebookLoginModel);
+                FacebookDataModel facebookData = await Facebook.GetUserLoginData(facebookLoginModel.AccessToken);
+                ExternalLoginInfo info = CustomExternalLoginInfo.FromLoginModel("Facebook", facebookData);
 
                 var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
                 externalLoginResponse.IsRegistered = result.Succeeded;
