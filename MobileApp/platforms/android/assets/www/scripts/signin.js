@@ -64,48 +64,6 @@ function statusChangeCallback(response) {
                 HideLoadingOverlay();
             }
         );
-
-        //FB.api(
-        //    '/me',
-        //    'GET',
-        //    { "fields": "id,name,first_name,last_name,email" },
-        //    function (response2) {
-        //        console.log(response2);
-        //        var data = {
-        //            Id: response2.id,
-        //            Name: response2.name,
-        //            FirstName: response2.first_name,
-        //            LastName: response2.last_name,
-        //            Email: response2.email
-        //        };
-
-        //        var jsonString = JSON.stringify(data);
-        //        console.log(jsonString);
-        //        API.SignInFacebook(
-        //            jsonString,
-        //            function(returned) {
-        //                if (returned.isModelValid) {
-        //                    if (returned.result.succeeded) {
-        //                        User.IsAuthinticated = true;
-        //                        Pages.GoTo("/main");
-        //                    } else {
-        //                        if (!returned.isRegistered) {
-        //                            User.ExternalRegisterConfirmation = true;
-        //                            User.ExternalRegisterType = "Facebook";
-        //                            Pages.GoTo("/externalRegister");
-        //                        }
-        //                    }
-        //                } else {
-        //                    $("#errors").empty();
-        //                    returned.errors.forEach(function (item) {
-        //                        $("#errors").append("<p>" + item + "</p>");
-        //                    });
-        //                }
-        //            }
-        //        );
-        //    }
-        //);
-        console.log('Logged in and authenticated');
     } else {
         console.log('Not autheticated');
     }
