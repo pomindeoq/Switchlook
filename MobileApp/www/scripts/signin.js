@@ -76,22 +76,18 @@ function FBcheckLoginState() {
 };
  // Google button //
 
-function onSuccess(googleUser) {
-    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-}
-function onFailure(error) {
-    console.log(error);
-}
+(function() {
+    gapi.auth2.init({
+        client_id: '697330306989-6ur1rkdq2brslp5nvglurri3qj1025ut.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin', /** Default value **/
+        scope: 'profile'  // Request scopes in addition to 'profile' and 'email'      scope: 'additional_scope'
+    });   
+});
 
-function googleRenderButton() {
-    gapi.signin2.render('g-signin2', {
-        'scope': 'profile email',
-        'width': 167, 
-        'height': 28,
-        'longtitle': true,
-        'theme': 'dark',
-        'onsuccess': onSignIn,
-        'onfailure': onFailure,        
+var startApp = function () {
+    gapi.load('auth2', function () {
+        // Retrieve the singleton for the GoogleAuth library and set up the client.            
+        attachSignin(document.getElementById('customBtn'));
     });
 }
 
@@ -141,4 +137,16 @@ function onSignIn(googleUser) {
             UI.LoadingOverlay.Hide();
         }
     );
-};
+}
+
+function attachSignin(element) {
+    console.log(element.id);
+    auth2.attachClickHandler(element, {},
+        function (googleUser) {         
+           console.log(googleUser.getBasicProfile().getName());
+        }, function (error) {
+            alert(JSON.stringify(error, undefined, 2));
+        });
+}
+  
+    
