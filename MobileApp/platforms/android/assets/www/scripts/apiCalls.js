@@ -107,7 +107,6 @@ WebApi.prototype.SignIn = function (data, handler) {
         true,
         function (returned) {
             handler(returned);
-            //Pages.GoTo("/main");
         }
     );
 }
@@ -120,8 +119,6 @@ WebApi.prototype.RegisterAccount = function (data, handler) {
         true,
         function (returned) {
             handler(returned);
-
-            // redirect to somewhere when user registers
         }
     );
 }
@@ -132,9 +129,9 @@ WebApi.prototype.SignOut = function() {
         null,
         "account/signOut",
         true,
-        function (returned) {
+        function () {
             User.IsAuthinticated = false;
-            Pages.GoTo("/login");
+            UI.Pages.GoTo("/login");
         }
     );
 }

@@ -2,8 +2,6 @@
 // http://go.microsoft.com/fwlink/?LinkID=397704
 // To debug code on page load in cordova-simulate or on Android devices/emulators: launch your app, set breakpoints, 
 // and then run "window.location.reload()" in the JavaScript Console.
-var Pages = new Pages();
-var NavigationTop = new NavigationTop();
 var UI = new Ui();
 var API = new WebApi();
 var User;

@@ -47,12 +47,12 @@ function statusChangeCallback(response) {
                 if (returned.isModelValid) {
                     if (returned.result.succeeded) {
                         User.IsAuthinticated = true;
-                        Pages.GoTo("/main");
+                        UI.Pages.GoTo("/main");
                     } else {
                         if (!returned.isRegistered) {
                             User.ExternalRegisterConfirmation = true;
                             User.ExternalRegisterType = "Facebook";
-                            Pages.GoTo("/externalRegister");
+                            UI.Pages.GoTo("/externalRegister");
                         }
                     }
                 } else {
@@ -124,12 +124,12 @@ function onSignIn(googleUser) {
                 if (returned.result.succeeded) {
                     User.IsAuthinticated = true;
                     gapi.auth2.getAuthInstance().signOut();
-                    Pages.GoTo("/main");
+                    UI.Pages.GoTo("/main");
                 } else {
                     if (!returned.isRegistered) {
                         User.ExternalRegisterConfirmation = true;
                         User.ExternalRegisterType = "Google";
-                        Pages.GoTo("/externalRegister");
+                        UI.Pages.GoTo("/externalRegister");
                     }
                 }
             } else {

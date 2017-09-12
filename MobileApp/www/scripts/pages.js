@@ -131,9 +131,9 @@ function Page(name, route, url, handler, reqAuthentication = true, showNavigatio
             UI.Pages.SwitchPage(tempRoute);
             UI.LoadingOverlay.Show();
             if (tempShowNavigationTop) {
-                NavigationTop.Show(tempNavigationTopData);
+                UI.NavigationTop.Show(tempNavigationTopData);
             } else {
-                NavigationTop.Hide();
+                UI.NavigationTop.Hide();
             }
             $('#app').load(tempUrl,
                 function () {

@@ -8,7 +8,7 @@
     var navigationTopData = new NavigationTopData(true, '<span class="icon icon-arrow-left2"></span>', false, '', true, 'Login'); // setting up top navigation
 
     var page = new Page("Login", "/login", "pages/login/index.html", handler, true, navigationTopData);
-    Pages.AddPage(page);
+    UI.Pages.AddPage(page);
 }());
 
 (function () {
@@ -17,7 +17,7 @@
     }
 
     var page = new Page("Main", "Switchlook", "/main", "pages/main.html", handler);
-    Pages.AddPage(page);
+    UI.Pages.AddPage(page);
 }());
 
 */
@@ -127,31 +127,21 @@ function Page(name, route, url, handler, reqAuthentication = true, showNavigatio
     var tempHanlder = this.Handler, tempUrl = this.Url;
     router.addRoute(this.Route, function () {
 
-        if (Pages.IsAuthToAccess(tempReqAuthentication, User.IsAuthinticated)) {
-            Pages.SwitchPage(tempRoute);
-            ShowLoadingOverlay();
+        if (UI.Pages.IsAuthToAccess(tempReqAuthentication, User.IsAuthinticated)) {
+            UI.Pages.SwitchPage(tempRoute);
+            UI.LoadingOverlay.Show();
             if (tempShowNavigationTop) {
-                NavigationTop.Show(tempNavigationTopData);
+                UI.NavigationTop.Show(tempNavigationTopData);
             } else {
-                NavigationTop.Hide();
+                UI.NavigationTop.Hide();
             }
             $('#app').load(tempUrl,
                 function () {
                     tempHanlder();
-                    HideLoadingOverlay();
+                    UI.LoadingOverlay.Hide();
                 });
         } else {
-            Pages.GoTo("/login");
+            UI.Pages.GoTo("/login");
         }
     });
-}
-
-function ShowLoadingOverlay() {
-    $('body').css('overflow', 'hidden'); 
-    $('#LoadingOverlay').css('display', 'block');
-}
-
-function HideLoadingOverlay() {
-    $('body').css('overflow', '');
-    $('#LoadingOverlay').fadeOut(250);
 }
