@@ -4,6 +4,7 @@
 // and then run "window.location.reload()" in the JavaScript Console.
 var Pages = new Pages();
 var NavigationTop = new NavigationTop();
+var UI = new Ui();
 var API = new WebApi();
 var User;
 
@@ -15,6 +16,7 @@ var User;
 
     function onDeviceReady() {
 
+        // Init User object
         User = new User();
 
         $(function () {
@@ -39,7 +41,7 @@ var User;
             var navigationTopData = new NavigationTopData(false, '', false, '', true, 'Switchlook');
 
             var page = new Page("Main", "/main", "pages/main.html", handler, true, true, navigationTopData);
-            Pages.AddPage(page);
+            UI.Pages.AddPage(page);
         }());
 
         // LOGIN
@@ -51,7 +53,7 @@ var User;
             var navigationTopData = new NavigationTopData(true, '<span class="icon icon-arrow-left2"></span>', false, '', true, 'Login');
 
             var page = new Page("Login", "/login", "pages/login/index.html", handler, false, true, navigationTopData);
-            Pages.AddPage(page);
+            UI.Pages.AddPage(page);
         }());
 
         // PROFILE
@@ -63,7 +65,7 @@ var User;
             var navigationTopData = new NavigationTopData(true, '<a href="#/settings"><span class="icon icon-menu"></span></a>', false, '', true, 'Profile');
 
             var page = new Page("Profile", "/profile", "pages/profile/index.html", handler, true, true, navigationTopData);
-            Pages.AddPage(page);
+            UI.Pages.AddPage(page);
         }());
 
         // SETTINGS
@@ -75,7 +77,7 @@ var User;
             var navigationTopData = new NavigationTopData(true, '<a href="#/profile"><span class="icon icon-arrow-left2"></span></a>', false, '', true, 'Settings');
 
             var page = new Page("Settings", "/settings", "pages/settings/index.html", handler, true, true, navigationTopData);
-            Pages.AddPage(page);
+            UI.Pages.AddPage(page);
         }());
 
         // SIGN UP
@@ -85,7 +87,7 @@ var User;
             };
 
             var page = new Page("Signup", "/signup", "pages/signup/index.html", handler, false, false);
-            Pages.AddPage(page);
+            UI.Pages.AddPage(page);
         }());
 
         // SIGN IN
@@ -96,21 +98,21 @@ var User;
             };
 
             var page = new Page("Signin", "/signin", "pages/signin/index.html", handler, false, false);
-            Pages.AddPage(page);
+            UI.Pages.AddPage(page);
         }());
 
         // EXTERNAL REGISTER CONFIRMATION
         (function () {
             var handler = function () {
                 if (!User.ExternalRegisterConfirmation)
-                    Pages.GoTo("/main");
+                    UI.Pages.GoTo("/main");
             };
 
             var page = new Page("ExternalRegister", "/externalRegister", "pages/signin/registrationConfirmation.html", handler, false, false);
-            Pages.AddPage(page);
+            UI.Pages.AddPage(page);
         }());
 
-        console.log(Pages);
+        console.log(UI.Pages);
 
 
 
@@ -148,7 +150,7 @@ var User;
                         if (returned.isModelValid) {
                             if (returned.succeeded) {
                                 User.IsAuthinticated = true;
-                                Pages.GoTo("/main");
+                                UI.Pages.GoTo("/main");
                             } else {
                                 returned.errors.forEach(function (item) {
                                     $("#errors").append("<p>" + item + "</p>");
@@ -182,7 +184,7 @@ var User;
                         if (returned.isModelValid) {
                             if (returned.result.succeeded) {
                                 User.IsAuthinticated = true;
-                                Pages.GoTo("/main");
+                                UI.Pages.GoTo("/main");
                             }
                         } else {
                             $("#errors").empty();
@@ -231,7 +233,7 @@ var User;
                                     if (returned.isModelValid) {
                                         if (returned.createResult.succeeded) {
                                             User.IsAuthinticated = true;
-                                            Pages.GoTo("/main");
+                                            UI.Pages.GoTo("/main");
                                         } else {
                                             returned.errors.forEach(function (item) {
                                                 $("#errors").append("<p>" + item + "</p>");
@@ -268,7 +270,7 @@ var User;
                                     if (returned.createResult.succeeded) {
                                         User.IsAuthinticated = true;
                                         gapi.auth2.getAuthInstance().signOut();
-                                        Pages.GoTo("/main");
+                                        UI.Pages.GoTo("/main");
                                     } else {
                                         returned.errors.forEach(function (item) {
                                             $("#errors").append("<p>" + item + "</p>");
