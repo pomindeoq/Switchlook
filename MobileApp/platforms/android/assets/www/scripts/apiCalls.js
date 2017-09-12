@@ -75,6 +75,30 @@ WebApi.prototype.SignInFacebook = function (data, handler) {
     );
 }
 
+WebApi.prototype.GoogleRegister = function (data, handler) {
+    this.Call(
+        "POST",
+        data,
+        "account/googleRegister",
+        true,
+        function (returned) {
+            handler(returned);
+        }
+    );
+}
+
+WebApi.prototype.SignInGoogle = function(data, handler) {
+    this.Call(
+        "POST",
+        data,
+        "account/googleSignIn",
+        true,
+        function(returned) {
+            handler(returned);
+        }
+    );
+}
+
 WebApi.prototype.SignIn = function (data, handler) {
     this.Call(
         "POST",

@@ -5,7 +5,7 @@
 var Pages = new Pages();
 var NavigationTop = new NavigationTop();
 var API = new WebApi();
-var User = new User();
+var User;
 
 
 (function () {
@@ -14,6 +14,8 @@ var User = new User();
     document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
 
     function onDeviceReady() {
+
+        User = new User();
 
         $(function () {
             $(window).bind('hashchange', function () {
@@ -209,19 +211,55 @@ var User = new User();
                 e.preventDefault();
 
                 if (User.ExternalRegisterConfirmation) {
+                    if (User.ExternalRegisterType === "Facebook") {
+                        facebook_getUserAccessToken(function (token) {
+                            var username = $('#username').val();
 
-                    facebook_getUserAccessToken(function(token) {
+                            var data = {
+                                AccessToken: token,
+                                Username: username
+                            }
+                            var jsonStr = JSON.stringify(data);
+
+                            console.log(jsonStr);
+
+                            API.FacebookRegister(
+                                jsonStr,
+                                function (returned) {
+                                    $("#errors").empty();
+                                    console.log(returned);
+                                    if (returned.isModelValid) {
+                                        if (returned.createResult.succeeded) {
+                                            User.IsAuthinticated = true;
+                                            Pages.GoTo("/main");
+                                        } else {
+                                            returned.errors.forEach(function (item) {
+                                                $("#errors").append("<p>" + item + "</p>");
+                                            });
+                                        }
+                                    } else {
+                                        $("#errors").empty();
+                                        returned.errors.forEach(function (item) {
+                                            $("#errors").append("<p>" + item + "</p>");
+                                        });
+                                    }
+                                }
+                            );
+
+                        });
+
+                    }
+                    else if (User.ExternalRegisterType === "Google") {
+
+                        var token = google_getUserAccessToken();
                         var username = $('#username').val();
-
                         var data = {
                             AccessToken: token,
                             Username: username
                         }
                         var jsonStr = JSON.stringify(data);
-
                         console.log(jsonStr);
-
-                        API.FacebookRegister(
+                        API.GoogleRegister(
                             jsonStr,
                             function (returned) {
                                 $("#errors").empty();
@@ -229,6 +267,7 @@ var User = new User();
                                 if (returned.isModelValid) {
                                     if (returned.createResult.succeeded) {
                                         User.IsAuthinticated = true;
+                                        gapi.auth2.getAuthInstance().signOut();
                                         Pages.GoTo("/main");
                                     } else {
                                         returned.errors.forEach(function (item) {
@@ -244,7 +283,7 @@ var User = new User();
                             }
                         );
 
-                    });
+                    }
                     
 
                     

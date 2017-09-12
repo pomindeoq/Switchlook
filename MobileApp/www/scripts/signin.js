@@ -95,13 +95,57 @@ function googleRenderButton() {
     });
 }
 
+function google_getUserAccessToken() {
+
+    var auth2 = gapi.auth2.getAuthInstance();
+    var googleUser = auth2.currentUser.get();
+
+    var id_token = googleUser.getAuthResponse().id_token;
+
+    return id_token;
+}
+
+function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+        console.log('User signed out.');
+    });
+}
+
 function onSignIn(googleUser) {
-    // Useful data for your client-side scripts:
-    var profile = googleUser.getBasicProfile();
-    console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-    console.log('Full Name: ' + profile.getName());
-    console.log('Given Name: ' + profile.getGivenName());
-    console.log('Family Name: ' + profile.getFamilyName());
-    console.log("Image URL: " + profile.getImageUrl());
-    console.log("Email: " + profile.getEmail());
+    var id_token = googleUser.getAuthResponse().id_token;
+    console.log(id_token);
+
+    var data = {
+        AccessToken: id_token
+    }
+
+    var jsonString = JSON.stringify(data);
+    console.log(jsonString);
+
+    ShowLoadingOverlay();
+    API.SignInGoogle(
+        jsonString,
+        function (returned) {
+            if (returned.isModelValid) {
+                if (returned.result.succeeded) {
+                    User.IsAuthinticated = true;
+                    gapi.auth2.getAuthInstance().signOut();
+                    Pages.GoTo("/main");
+                } else {
+                    if (!returned.isRegistered) {
+                        User.ExternalRegisterConfirmation = true;
+                        User.ExternalRegisterType = "Google";
+                        Pages.GoTo("/externalRegister");
+                    }
+                }
+            } else {
+                $("#errors").empty();
+                returned.errors.forEach(function (item) {
+                    $("#errors").append("<p>" + item + "</p>");
+                });
+            }
+            HideLoadingOverlay();
+        }
+    );
 };
