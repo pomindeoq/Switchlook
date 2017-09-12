@@ -19,7 +19,7 @@ namespace WebApi.Utils
                 new Claim(ClaimTypes.GivenName, loginModel.FirstName, ClaimValueTypes.String, issuer),
                 new Claim(ClaimTypes.Surname, loginModel.LastName, ClaimValueTypes.String, issuer)
             };
-            var identity = new ClaimsIdentity(claims, "Facebook", ClaimTypes.Name, ClaimTypes.Role);
+            var identity = new ClaimsIdentity(claims, issuer, ClaimTypes.Name, ClaimTypes.Role);
             var claimsPrincipal = new ClaimsPrincipal(identity);
             ExternalLoginInfo info = new ExternalLoginInfo(
                 claimsPrincipal,

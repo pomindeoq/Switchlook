@@ -52,7 +52,12 @@ namespace WebApi.Models
         string LastName { get; set; }
         string Email { get; set; }
     }
+    public interface IExternalLoginModel
+    {
+        string AccessToken { get; set; }
+    }
 
+    // Facebook
     public class FacebookDataModel : IExternalDataModel
     {
         [JsonProperty("id")]
@@ -67,9 +72,9 @@ namespace WebApi.Models
         public string Email { get; set; }
     }
 
-    public interface IExternalLoginModel
+    public class FacebookLoginModel : IExternalLoginModel
     {
-        string AccessToken { get; set; }
+        public string AccessToken { get; set; }
     }
 
     public class FacebookRegisterModel : IExternalLoginModel
@@ -78,8 +83,29 @@ namespace WebApi.Models
         public string Username { get; set; }
     }
 
-    public class FacebookLoginModel : IExternalLoginModel
+    // Google
+    public class GoogleDataModel : IExternalDataModel
+    {
+        [JsonProperty("sub")]
+        public string Id { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("given_name")]
+        public string FirstName { get; set; }
+        [JsonProperty("family_name")]
+        public string LastName { get; set; }
+        [JsonProperty("email")]
+        public string Email { get; set; }
+    }
+
+    public class GoogleLoginModel : IExternalLoginModel
     {
         public string AccessToken { get; set; }
+    }
+
+    public class GoogleRegisterModel
+    {
+        public string AccessToken { get; set; }
+        public string Username { get; set; }
     }
 }
