@@ -48,7 +48,7 @@ var User;
                 //
             };
 
-            var navigationTopData = new NavigationTopData(true, '<span class="icon icon-arrow-left2"></span>', false, '', true, 'Login');
+            var navigationTopData = new NavigationTopData(true, '<a href="#/signin"><span class="icon icon-arrow-left2"></span></a>', false, '', true, 'Login');
 
             var page = new Page("Login", "/login", "pages/login/index.html", handler, false, true, navigationTopData);
             UI.Pages.AddPage(page);
@@ -235,95 +235,6 @@ var User;
                 API.SignOut();
                
                 console.log("signOutLink");
-            });
-
-            // External register confirmation
-            $(document).on("click", "#regConfirmationBtn", function (e) {
-                e.preventDefault();
-
-                if (User.ExternalRegisterConfirmation) {
-                    UI.LoadingOverlay.Show();
-                    if (User.ExternalRegisterType === "Facebook") {
-                        facebook_getUserAccessToken(function (token) {
-                            var username = $('#username').val();
-
-                            var data = {
-                                AccessToken: token,
-                                Username: username
-                            }
-                            var jsonStr = JSON.stringify(data);
-
-                            console.log(jsonStr);
-
-                            API.FacebookRegister(
-                                jsonStr,
-                                function (returned) {
-                                    $("#errors").empty();
-                                    console.log(returned);
-                                    if (returned.isModelValid) {
-                                        if (returned.createResult.succeeded) {
-                                            User.IsAuthinticated = true;
-                                            UI.Pages.GoTo("/main");
-                                        } else {
-                                            UI.LoadingOverlay.Hide();
-                                            returned.errors.forEach(function (item) {
-                                                $("#errors").append("<p>" + item + "</p>");
-                                            });
-                                        }
-                                    } else {
-                                        UI.LoadingOverlay.Hide();
-                                        returned.errors.forEach(function (item) {
-                                            $("#errors").append("<p>" + item + "</p>");
-                                        });
-                                    }
-                                }
-                            );
-
-                        });
-
-                    }
-                    else if (User.ExternalRegisterType === "Google") {
-
-                        var token = google_getUserAccessToken();
-                        var username = $('#username').val();
-                        var data = {
-                            AccessToken: token,
-                            Username: username
-                        }
-                        var jsonStr = JSON.stringify(data);
-                        console.log(jsonStr);
-                        API.GoogleRegister(
-                            jsonStr,
-                            function (returned) {
-                                $("#errors").empty();
-                                console.log(returned);
-                                if (returned.isModelValid) {
-                                    if (returned.createResult.succeeded) {
-                                        User.IsAuthinticated = true;
-                                        gapi.auth2.getAuthInstance().signOut();
-                                        UI.Pages.GoTo("/main");
-                                    } else {
-                                        UI.LoadingOverlay.Hide();
-                                        returned.errors.forEach(function (item) {
-                                            $("#errors").append("<p>" + item + "</p>");
-                                        });
-                                    }
-                                } else {
-                                    UI.LoadingOverlay.Hide();
-                                    returned.errors.forEach(function (item) {
-                                        $("#errors").append("<p>" + item + "</p>");
-                                    });
-                                }
-                            }
-                        );
-
-                    }
-                    
-
-                    
-                }
-
-                console.log("ExternalRegisterConfirmationClick");
             });
 
         }());

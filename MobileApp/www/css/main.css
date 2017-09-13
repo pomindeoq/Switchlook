@@ -356,7 +356,7 @@ button.google-auth.google-dark {
     text-align: left; 
 
 }
-  
+
 button.google-auth.google-dark span.google-icon {
     background-image: url("../images/g_logo.svg");
     background-color: #fff;
@@ -368,9 +368,9 @@ button.google-auth.google-dark span.google-icon {
     width: 9vw;
     height: 9.5vw;
     border-radius: 1px;
-    margin-right: 7vw; 
+    margin-right: 7vw;
 }
-    
+
 button.google-auth.google-dark span.google-text {
     text-align: center;
     display: inline-block;
