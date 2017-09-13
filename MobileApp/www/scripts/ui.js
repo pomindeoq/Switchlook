@@ -5,12 +5,19 @@
 }
 
 function LoadingOverlay() {
-    this.Show = function() {
-        $('body').css('overflow', 'hidden');
-        $('#LoadingOverlay').css('display', 'block');
+    this.Status = false;
+    this.Show = function () {
+        if (this.Status === false) {
+            $('body').css('overflow', 'hidden');
+            $('#LoadingOverlay').css('display', 'block');
+            this.Status = true;
+        }    
     }
-    this.Hide = function() {
-        $('body').css('overflow', '');
-        $('#LoadingOverlay').fadeOut(250);
+    this.Hide = function () {
+        if (this.Status === true) {
+            $('body').css('overflow', '');
+            $('#LoadingOverlay').fadeOut(250);
+            this.Status = false;
+        }
     }
 }

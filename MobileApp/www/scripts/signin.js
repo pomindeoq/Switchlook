@@ -85,17 +85,9 @@ FB.logout(function (response) {
 
 // Google button //
 
-gapi.load('auth2', function () {
-    // Retrieve the singleton for the GoogleAuth library and set up the client.  
-    gapi.auth2.init({
-        client_id: '697330306989-6ur1rkdq2brslp5nvglurri3qj1025ut.apps.googleusercontent.com',
-        cookiepolicy: 'single_host_origin', /** Default value **/
-        scope: 'profile'  // Request scopes in addition to 'profile' and 'email'      scope: 'additional_scope'
-    });
-    
-});
+var googleAuth2 = null;
 
-function startApp(){
+function startApp() {
     attachSignin(document.getElementById('customBtn'));
 }
 

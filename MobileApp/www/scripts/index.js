@@ -91,8 +91,31 @@ var User;
         // SIGN IN
         (function () {
             var handler = function () {
+<<<<<<< HEAD
                 //render custom fb button
                 startApp();
+=======
+                FB.XFBML.parse(); // Re-render fb button
+                if (googleAuth2 === null) {
+                    gapi.load('auth2',
+                        function() {
+                            // Retrieve the singleton for the GoogleAuth library and set up the client.  
+                            googleAuth2 = gapi.auth2.init({
+                                client_id: '697330306989-6ur1rkdq2brslp5nvglurri3qj1025ut.apps.googleusercontent.com',
+                                cookiepolicy: 'single_host_origin', /** Default value **/
+                                scope:
+                                    'profile' // Request scopes in addition to 'profile' and 'email'      scope: 'additional_scope'
+                            }).then(function(auth2) {
+                                startApp();
+                            });
+
+                        });
+                } else {
+                    startApp();
+                }
+                
+                
+>>>>>>> 72a9fa61b905e45d65494769d9c4a325170451ea
             };
 
             var page = new Page("Signin", "/signin", "pages/signin/index.html", handler, false, false);
@@ -104,6 +127,20 @@ var User;
             var handler = function () {
                 if (!User.ExternalRegisterConfirmation)
                     UI.Pages.GoTo("/main");
+
+                if (googleAuth2 === null) {
+                    gapi.load('auth2',
+                        function () {
+                            // Retrieve the singleton for the GoogleAuth library and set up the client.  
+                            googleAuth2 = gapi.auth2.init({
+                                client_id: '697330306989-6ur1rkdq2brslp5nvglurri3qj1025ut.apps.googleusercontent.com',
+                                cookiepolicy: 'single_host_origin', /** Default value **/
+                                scope:
+                                    'profile' // Request scopes in addition to 'profile' and 'email'      scope: 'additional_scope'
+                            });
+
+                        });
+                }
             };
 
             var page = new Page("ExternalRegister", "/externalRegister", "pages/signin/registrationConfirmation.html", handler, false, false);
@@ -211,6 +248,7 @@ var User;
                 e.preventDefault();
 
                 if (User.ExternalRegisterConfirmation) {
+                    UI.LoadingOverlay.Show();
                     if (User.ExternalRegisterType === "Facebook") {
                         facebook_getUserAccessToken(function (token) {
                             var username = $('#username').val();
@@ -233,12 +271,13 @@ var User;
                                             User.IsAuthinticated = true;
                                             UI.Pages.GoTo("/main");
                                         } else {
+                                            UI.LoadingOverlay.Hide();
                                             returned.errors.forEach(function (item) {
                                                 $("#errors").append("<p>" + item + "</p>");
                                             });
                                         }
                                     } else {
-                                        $("#errors").empty();
+                                        UI.LoadingOverlay.Hide();
                                         returned.errors.forEach(function (item) {
                                             $("#errors").append("<p>" + item + "</p>");
                                         });
@@ -270,12 +309,13 @@ var User;
                                         gapi.auth2.getAuthInstance().signOut();
                                         UI.Pages.GoTo("/main");
                                     } else {
+                                        UI.LoadingOverlay.Hide();
                                         returned.errors.forEach(function (item) {
                                             $("#errors").append("<p>" + item + "</p>");
                                         });
                                     }
                                 } else {
-                                    $("#errors").empty();
+                                    UI.LoadingOverlay.Hide();
                                     returned.errors.forEach(function (item) {
                                         $("#errors").append("<p>" + item + "</p>");
                                     });
