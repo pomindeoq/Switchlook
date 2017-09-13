@@ -1,26 +1,29 @@
 ﻿<div class="signin-section">
     <div class="section group vertical-center">
-        <div class="col span_3_of_12">
+        <div class="col span_2_of_12">
         </div>
-        <div class="col span_6_of_12">
+        <div class="col span_8_of_12">
             <div class="logo">                
                 <img class="logoimg" src="../../images/LOGO 20.png"/>
             </div>     
             <div id="errors">
 
             </div>
-            <div class="form-buttons">                              
-                <div class="fb-login-button" onlogin="FBcheckLoginState()" data-max-rows="1" data-size="medium" data-button-type="login_with"></div>                        
-                <div id="customBtn" class="customGPlusSignIn">
-                    <span class="icon"></span>
-                    <span class="buttonText">Google</span>
-                </div>
+            <div class="form-buttons">                                                             
+                <button id="FB-login" class="google-auth google-dark signin-btn" onlogin="FBcheckLoginState()">
+                    <span class="google-icon"></span>
+                    <span class="google-text">Sign in with Facebook</span>
+                </button>
+                <button id="customBtn" class="google-auth google-dark signin-btn">
+                    <span class="google-icon"></span>
+                    <span class="google-text">Sign in with Google</span>
+                </button>
                 <div class="signin-btn">
                     <input class="signin-btn" type="submit" value="Login with email">
                 </div>
             </div>         
         </div>
-        <div class="col span_3_of_12">
+        <div class="col span_2_of_12">
         </div>
     </div>
 </div>

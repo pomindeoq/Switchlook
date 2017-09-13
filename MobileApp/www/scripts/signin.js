@@ -69,12 +69,21 @@ function statusChangeCallback(response) {
     }
 };
 
-function FBcheckLoginState() {
+function facebookLogout() {
     FB.getLoginStatus(function (response) {
-        statusChangeCallback(response);
+        if (response.status === 'connected') {
+            FB.logout(function (response) {
+               console.log('user logged out')
+            });
+        }
     });
-};
- // Google button //
+}
+
+FB.logout(function (response) {
+    console.log('logged out')
+});
+
+// Google button //
 
 gapi.load('auth2', function () {
     // Retrieve the singleton for the GoogleAuth library and set up the client.  

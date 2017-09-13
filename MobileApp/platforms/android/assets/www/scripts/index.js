@@ -91,7 +91,7 @@ var User;
         // SIGN IN
         (function () {
             var handler = function () {
-                FB.XFBML.parse(); // Re-render fb button
+                //render custom fb button
                 startApp();
             };
 

@@ -1,4 +1,6 @@
-﻿.login-btn {
+﻿@import url("https://fonts.googleapis.com/css?family=Roboto:500");
+
+.login-btn {
     text-align: center;
     padding-top: 3%;
 }
@@ -6,6 +8,8 @@
     text-align: center;
     width: 100%;
     margin: 1% 1% 1% 0%;
+    height: 9vw;
+
 }
 
 .login-btn input[type=submit] {
@@ -20,15 +24,22 @@ input[type=submit].signin-btn {
     background: #2D3030;
     border: 0 none;
     -webkit-border-radius: 5px;
-    border-radius: 3px;
+    border-radius: 2px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .signin-btn input[type=submit] {
     width: 100%;
-    font-size: 3.5vw;
+    font-size: 4vw;
     padding-top: 3%;
     padding-bottom: 3%;
-    text-transform: capitalize;
+    font-size: 3vw;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #fff;
+    opacity: 1;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
 }
 
 .form-buttons {
@@ -38,7 +49,7 @@ input[type=submit].signin-btn {
 .login-forgot-password {
     font-size: 3vw;
     text-align: center;
-    padding-top: 2%;
+
 }
 
 .login-forgot-password a {
