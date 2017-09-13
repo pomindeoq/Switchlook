@@ -91,12 +91,12 @@ var User;
         // SIGN IN
         (function () {
             var handler = function () {
-            
-                if (testauth2 === null) {
+                
+                if (googleAuth2 === null) {
                     gapi.load('auth2',
                         function() {
                             // Retrieve the singleton for the GoogleAuth library and set up the client.  
-                            testauth2 = gapi.auth2.init({
+                            googleAuth2 = gapi.auth2.init({
                                 client_id: '697330306989-6ur1rkdq2brslp5nvglurri3qj1025ut.apps.googleusercontent.com',
                                 cookiepolicy: 'single_host_origin', /** Default value **/
                                 scope:
@@ -109,7 +109,7 @@ var User;
                 } else {
                     startApp();
                 }
-                               
+                              
             };
 
             var page = new Page("Signin", "/signin", "pages/signin/index.html", handler, false, false);
@@ -122,11 +122,11 @@ var User;
                 if (!User.ExternalRegisterConfirmation)
                     UI.Pages.GoTo("/main");
 
-                if (testauth2 === null) {
+                if (googleAuth2 === null) {
                     gapi.load('auth2',
                         function () {
                             // Retrieve the singleton for the GoogleAuth library and set up the client.  
-                            testauth2 = gapi.auth2.init({
+                            googleAuth2 = gapi.auth2.init({
                                 client_id: '697330306989-6ur1rkdq2brslp5nvglurri3qj1025ut.apps.googleusercontent.com',
                                 cookiepolicy: 'single_host_origin', /** Default value **/
                                 scope:

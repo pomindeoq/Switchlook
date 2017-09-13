@@ -68,6 +68,11 @@ function statusChangeCallback(response) {
         console.log('Not autheticated');
     }
 };
+function FBcheckLoginState() {
+    FB.getLoginStatus(function (response) {
+        statusChangeCallback(response);
+    });
+};
 
 function facebookLogout() {
     FB.getLoginStatus(function (response) {
@@ -78,10 +83,20 @@ function facebookLogout() {
         }
     });
 }
-
-FB.logout(function (response) {
-    console.log('logged out')
+$(document).on("click", "#FB-button", function (e) {
+    e.preventDefault();
+    facebookLogin();
+    console.log("facebook login");
 });
+
+function facebookLogin() {
+    FB.login(function (response) {
+        if (response.status === 'connected') {
+            statusChangeCallback(response);
+        }
+    }, { scope: 'public_profile,email' }); 
+}
+
 
 // Google button //
 

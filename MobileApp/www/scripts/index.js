@@ -91,11 +91,7 @@ var User;
         // SIGN IN
         (function () {
             var handler = function () {
-<<<<<<< HEAD
-                //render custom fb button
-                startApp();
-=======
-                FB.XFBML.parse(); // Re-render fb button
+                
                 if (googleAuth2 === null) {
                     gapi.load('auth2',
                         function() {
@@ -113,9 +109,7 @@ var User;
                 } else {
                     startApp();
                 }
-                
-                
->>>>>>> 72a9fa61b905e45d65494769d9c4a325170451ea
+                              
             };
 
             var page = new Page("Signin", "/signin", "pages/signin/index.html", handler, false, false);

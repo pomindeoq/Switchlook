@@ -68,6 +68,11 @@ function statusChangeCallback(response) {
         console.log('Not autheticated');
     }
 };
+function FBcheckLoginState() {
+    FB.getLoginStatus(function (response) {
+        statusChangeCallback(response);
+    });
+};
 
 function facebookLogout() {
     FB.getLoginStatus(function (response) {
@@ -78,24 +83,24 @@ function facebookLogout() {
         }
     });
 }
-
-FB.logout(function (response) {
-    console.log('logged out')
+$(document).on("click", "#FB-button", function (e) {
+    e.preventDefault();
+    facebookLogin();
+    console.log("facebook login");
 });
+
+function facebookLogin() {
+    FB.login(function (response) {
+        if (response.status === 'connected') {
+            statusChangeCallback(response);
+        }
+    }, { scope: 'public_profile,email' }); 
+}
+
 
 // Google button //
 
-var testauth2 = null;
-
-//gapi.load('auth2', function () {
-//    // Retrieve the singleton for the GoogleAuth library and set up the client.  
-//    testauth2 = gapi.auth2.init({
-//        client_id: '697330306989-6ur1rkdq2brslp5nvglurri3qj1025ut.apps.googleusercontent.com',
-//        cookiepolicy: 'single_host_origin', /** Default value **/
-//        scope: 'profile'  // Request scopes in addition to 'profile' and 'email'      scope: 'additional_scope'
-//    });
-    
-//});
+var googleAuth2 = null;
 
 function startApp() {
     attachSignin(document.getElementById('customBtn'));
