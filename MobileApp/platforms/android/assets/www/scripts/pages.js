@@ -141,7 +141,7 @@ function Page(name, route, url, handler, reqAuthentication = true, showNavigatio
                     UI.LoadingOverlay.Hide();
                 });
         } else {
-            UI.Pages.GoTo("/login");
+            UI.Pages.GoTo("/signin");
         }
     });
 }

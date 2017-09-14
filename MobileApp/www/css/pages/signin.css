@@ -3,8 +3,8 @@
 .logoimg {
     max-height: 50vw;
     max-width: 50vw;
-    display: inline-block;
-    vertical-align: middle;
+    display: block;
+    margin: 0 auto;
 }
 
 /* Shared */
