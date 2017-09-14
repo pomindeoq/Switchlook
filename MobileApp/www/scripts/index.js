@@ -29,6 +29,8 @@ var User;
             $(window).trigger("hashchange"); // user refreshed the browser, fire the appropriate function
         }
 
+
+        /* SEPERATE THIS LATER */
         /* PAGES TO LOAD */
         // MAIN
         (function () {
