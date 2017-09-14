@@ -2,7 +2,7 @@
 // http://go.microsoft.com/fwlink/?LinkID=397704
 // To debug code on page load in cordova-simulate or on Android devices/emulators: launch your app, set breakpoints, 
 // and then run "window.location.reload()" in the JavaScript Console.
-var UI = new Ui();
+var App = new Application();
 var API = new WebApi();
 var User;
 
@@ -29,6 +29,8 @@ var User;
             $(window).trigger("hashchange"); // user refreshed the browser, fire the appropriate function
         }
 
+
+        /* SEPERATE THIS LATER */
         /* PAGES TO LOAD */
         // MAIN
         (function () {
@@ -39,7 +41,7 @@ var User;
             var navigationTopData = new NavigationTopData(false, '', false, '', true, 'Switchlook');
 
             var page = new Page("Main", "/main", "pages/main.html", handler, true, true, navigationTopData);
-            UI.Pages.AddPage(page);
+            App.Pages.AddPage(page);
         }());
 
         // LOGIN
@@ -50,8 +52,8 @@ var User;
 
             var navigationTopData = new NavigationTopData(true, '<a href="#/signin"><span class="icon icon-arrow-left2"></span></a>', false, '', true, 'Login');
 
-            var page = new Page("Login", "/login", "pages/login/index.html", handler, false, true, navigationTopData);
-            UI.Pages.AddPage(page);
+            var page = new Page("Login", "/login", "pages/login/index.html", handler, false, true, navigationTopData, false);
+            App.Pages.AddPage(page);
         }());
 
         // PROFILE
@@ -63,7 +65,7 @@ var User;
             var navigationTopData = new NavigationTopData(true, '<a href="#/settings"><span class="icon icon-menu"></span></a>', false, '', true, 'Profile');
 
             var page = new Page("Profile", "/profile", "pages/profile/index.html", handler, true, true, navigationTopData);
-            UI.Pages.AddPage(page);
+            App.Pages.AddPage(page);
         }());
 
         // SETTINGS
@@ -75,7 +77,7 @@ var User;
             var navigationTopData = new NavigationTopData(true, '<a href="#/profile"><span class="icon icon-arrow-left2"></span></a>', false, '', true, 'Settings');
 
             var page = new Page("Settings", "/settings", "pages/settings/index.html", handler, true, true, navigationTopData);
-            UI.Pages.AddPage(page);
+            App.Pages.AddPage(page);
         }());
 
         // SIGN UP
@@ -84,8 +86,10 @@ var User;
                 //
             };
 
-            var page = new Page("Signup", "/signup", "pages/signup/index.html", handler, false, false);
-            UI.Pages.AddPage(page);
+            var navigationTopData = new NavigationTopData(true, '<a href="#/login"><span class="icon icon-arrow-left2"></span></a>', false, '', true, 'Signup');
+
+            var page = new Page("Signup", "/signup", "pages/signup/index.html", handler, false, true, navigationTopData, false);
+            App.Pages.AddPage(page);
         }());
 
         // SIGN IN
@@ -112,15 +116,15 @@ var User;
                               
             };
 
-            var page = new Page("Signin", "/signin", "pages/signin/index.html", handler, false, false);
-            UI.Pages.AddPage(page);
+            var page = new Page("Signin", "/signin", "pages/signin/index.html", handler, false, false, null, false);
+            App.Pages.AddPage(page);
         }());
 
         // EXTERNAL REGISTER CONFIRMATION
         (function () {
             var handler = function () {
                 if (!User.ExternalRegisterConfirmation)
-                    UI.Pages.GoTo("/main");
+                    App.Pages.GoTo("/main");
 
                 if (googleAuth2 === null) {
                     gapi.load('auth2',
@@ -137,11 +141,11 @@ var User;
                 }
             };
 
-            var page = new Page("ExternalRegister", "/externalRegister", "pages/signin/registrationConfirmation.html", handler, false, false);
-            UI.Pages.AddPage(page);
+            var page = new Page("ExternalRegister", "/externalRegister", "pages/signin/registrationConfirmation.html", handler, false, false, null, false);
+            App.Pages.AddPage(page);
         }());
 
-        console.log(UI.Pages);
+        console.log(App.Pages);
 
 
 
@@ -179,7 +183,7 @@ var User;
                         if (returned.isModelValid) {
                             if (returned.succeeded) {
                                 User.IsAuthinticated = true;
-                                UI.Pages.GoTo("/main");
+                                App.Pages.GoTo("/main");
                             } else {
                                 returned.errors.forEach(function (item) {
                                     $("#errors").append("<p>" + item + "</p>");
@@ -213,7 +217,7 @@ var User;
                         if (returned.isModelValid) {
                             if (returned.result.succeeded) {
                                 User.IsAuthinticated = true;
-                                UI.Pages.GoTo("/main");
+                                App.Pages.GoTo("/main");
                             }
                         } else {
                             $("#errors").empty();

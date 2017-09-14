@@ -8,7 +8,7 @@
     var navigationTopData = new NavigationTopData(true, '<span class="icon icon-arrow-left2"></span>', false, '', true, 'Login'); // setting up top navigation
 
     var page = new Page("Login", "/login", "pages/login/index.html", handler, true, navigationTopData);
-    UI.Pages.AddPage(page);
+    App.Pages.AddPage(page);
 }());
 
 (function () {
@@ -17,7 +17,7 @@
     }
 
     var page = new Page("Main", "Switchlook", "/main", "pages/main.html", handler);
-    UI.Pages.AddPage(page);
+    App.Pages.AddPage(page);
 }());
 
 */
@@ -61,6 +61,24 @@ function NavigationTopData(leftShow = true, leftContent, rightShow = true, right
     this.Left = { Show: leftShow, Content: leftContent };
     this.Right = { Show: rightShow, Content: rightContent };
     this.Title = { Show: titleShow, Content: titleContent };
+}
+
+function NavigationBottom() {
+    this.Status = true;
+}
+
+NavigationBottom.prototype.Show = function() {
+    if (this.Status === false) {
+        $('#navigation-bottom').show();
+        this.Status = true;
+    }
+}
+
+NavigationBottom.prototype.Hide = function() {
+    if (this.Status === true) {
+        $('#navigation-bottom').hide();
+        this.Status = false;
+    }
 }
 
 function NavigationTop() {
@@ -120,6 +138,7 @@ function Page(name, route, url, handler, reqAuthentication = true, showNavigatio
     this.Handler = handler;
     this.ReqAuthentication = reqAuthentication;
 
+    var tempNavigationBottom = this.NavigationBottom;
     var tempReqAuthentication = this.ReqAuthentication;
     var tempRoute = this.Route;
     var tempNavigationTopData = this.NavigationTopData;
@@ -127,21 +146,26 @@ function Page(name, route, url, handler, reqAuthentication = true, showNavigatio
     var tempHanlder = this.Handler, tempUrl = this.Url;
     router.addRoute(this.Route, function () {
 
-        if (UI.Pages.IsAuthToAccess(tempReqAuthentication, User.IsAuthinticated)) {
-            UI.Pages.SwitchPage(tempRoute);
-            UI.LoadingOverlay.Show();
+        if (App.Pages.IsAuthToAccess(tempReqAuthentication, User.IsAuthinticated)) {
+            App.Pages.SwitchPage(tempRoute);
+            App.LoadingOverlay.Show();
             if (tempShowNavigationTop) {
-                UI.NavigationTop.Show(tempNavigationTopData);
+                App.NavigationTop.Show(tempNavigationTopData);
             } else {
-                UI.NavigationTop.Hide();
+                App.NavigationTop.Hide();
+            }
+            if (tempNavigationBottom.Show) {
+                App.NavigationBottom.Show();
+            } else {
+                App.NavigationBottom.Hide();
             }
             $('#app').load(tempUrl,
                 function () {
                     tempHanlder();
-                    UI.LoadingOverlay.Hide();
+                    App.LoadingOverlay.Hide();
                 });
         } else {
-            UI.Pages.GoTo("/signin");
+            App.Pages.GoTo("/signin");
         }
     });
 }
