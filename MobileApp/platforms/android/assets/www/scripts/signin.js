@@ -40,7 +40,7 @@ function statusChangeCallback(response) {
         var jsonString = JSON.stringify(data);
         console.log(jsonString);
 
-        UI.LoadingOverlay.Show();
+        App.LoadingOverlay.Show();
         API.SignInFacebook(
             jsonString,
             function(returned) {
@@ -48,12 +48,12 @@ function statusChangeCallback(response) {
                     if (returned.result.succeeded) {
                         User.IsAuthinticated = true;
                         facebookLogout();
-                        UI.Pages.GoTo("/main");
+                        App.Pages.GoTo("/main");
                     } else {
                         if (!returned.isRegistered) {
                             User.ExternalRegisterConfirmation = true;
                             User.ExternalRegisterType = "Facebook";
-                            UI.Pages.GoTo("/externalRegister");
+                            App.Pages.GoTo("/externalRegister");
                         }
                     }
                 } else {
@@ -62,7 +62,7 @@ function statusChangeCallback(response) {
                         $("#errors").append("<p>" + item + "</p>");
                     });
                 }
-                UI.LoadingOverlay.Hide();
+                App.LoadingOverlay.Hide();
             }
         );
     } else {
@@ -129,7 +129,7 @@ function onSignIn(googleUser) {
     var jsonString = JSON.stringify(data);
     console.log(jsonString);
 
-    UI.LoadingOverlay.Show();
+    App.LoadingOverlay.Show();
     API.SignInGoogle(
         jsonString,
         function (returned) {
@@ -137,12 +137,12 @@ function onSignIn(googleUser) {
                 if (returned.result.succeeded) {
                     User.IsAuthinticated = true;
                     gapi.auth2.getAuthInstance().signOut();
-                    UI.Pages.GoTo("/main");
+                    App.Pages.GoTo("/main");
                 } else {
                     if (!returned.isRegistered) {
                         User.ExternalRegisterConfirmation = true;
                         User.ExternalRegisterType = "Google";
-                        UI.Pages.GoTo("/externalRegister");
+                        App.Pages.GoTo("/externalRegister");
                     }
                 }
             } else {
@@ -151,7 +151,7 @@ function onSignIn(googleUser) {
                     $("#errors").append("<p>" + item + "</p>");
                 });
             }
-            UI.LoadingOverlay.Hide();
+            App.LoadingOverlay.Hide();
         }
     );
 }
@@ -174,7 +174,7 @@ $(document).on("click", "#regConfirmationBtn", function (e) {
     e.preventDefault();
 
     if (User.ExternalRegisterConfirmation) {
-        UI.LoadingOverlay.Show();
+        App.LoadingOverlay.Show();
         if (User.ExternalRegisterType === "Facebook") {
             facebook_getUserAccessToken(function (token) {
                 var username = $('#username').val();
@@ -196,15 +196,15 @@ $(document).on("click", "#regConfirmationBtn", function (e) {
                             if (returned.createResult.succeeded) {
                                 User.IsAuthinticated = true;
                                 facebookLogout();
-                                UI.Pages.GoTo("/main");
+                                App.Pages.GoTo("/main");
                             } else {
-                                UI.LoadingOverlay.Hide();
+                                App.LoadingOverlay.Hide();
                                 returned.errors.forEach(function (item) {
                                     $("#errors").append("<p>" + item + "</p>");
                                 });
                             }
                         } else {
-                            UI.LoadingOverlay.Hide();
+                            App.LoadingOverlay.Hide();
                             returned.errors.forEach(function (item) {
                                 $("#errors").append("<p>" + item + "</p>");
                             });
@@ -234,15 +234,15 @@ $(document).on("click", "#regConfirmationBtn", function (e) {
                         if (returned.createResult.succeeded) {
                             User.IsAuthinticated = true;
                             gapi.auth2.getAuthInstance().signOut();
-                            UI.Pages.GoTo("/main");
+                            App.Pages.GoTo("/main");
                         } else {
-                            UI.LoadingOverlay.Hide();
+                            App.LoadingOverlay.Hide();
                             returned.errors.forEach(function (item) {
                                 $("#errors").append("<p>" + item + "</p>");
                             });
                         }
                     } else {
-                        UI.LoadingOverlay.Hide();
+                        App.LoadingOverlay.Hide();
                         returned.errors.forEach(function (item) {
                             $("#errors").append("<p>" + item + "</p>");
                         });

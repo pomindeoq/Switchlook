@@ -1,6 +1,7 @@
-﻿function Ui() {
+﻿function Application() {
     this.Pages = new Pages();
     this.NavigationTop = new NavigationTop();
+    this.NavigationBottom = new NavigationBottom();
     this.LoadingOverlay = new LoadingOverlay();
 }
 

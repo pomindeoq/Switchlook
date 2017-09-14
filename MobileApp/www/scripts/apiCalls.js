@@ -131,7 +131,7 @@ WebApi.prototype.SignOut = function() {
         true,
         function () {
             User.IsAuthinticated = false;
-            UI.Pages.GoTo("/signin");
+            App.Pages.GoTo("/signin");
         }
     );
 }
