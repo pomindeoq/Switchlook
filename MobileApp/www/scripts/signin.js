@@ -55,7 +55,6 @@ function statusChangeCallback(response) {
                         if (!returned.isRegistered) {
                             User.ExternalRegisterConfirmation = true;
                             User.ExternalRegisterType = "Facebook";
-                            User.ExternalLoginToken = data.AccessToken;
                             App.Pages.GoTo("/externalRegister");
                         }
                     }

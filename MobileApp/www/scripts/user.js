@@ -2,5 +2,4 @@
     this.IsAuthinticated = API.IsUserAuthenticated();
     this.ExternalRegisterConfirmation = false;
     this.ExternalRegisterType = null;
-    this.ExternalLoginToken = null;
 }
