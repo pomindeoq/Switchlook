@@ -26,7 +26,7 @@ namespace WebApi.Controllers
         [HttpGet, Route("getItem/id={id}")]
         public async Task<Item> GetItem(int id)
         {
-            Item item = await _context.Items.FindAsync(id);
+            Item item = await _context.Items.SingleAsync(x => x.Id == id);
             return item;
         }
 
@@ -58,7 +58,7 @@ namespace WebApi.Controllers
         [HttpGet, Route("getItemCategory/id={id}")]
         public async Task<ItemCategory> GetItemCategroy(int id)
         {
-            ItemCategory result = await _context.ItemCategories.FindAsync(id);
+            ItemCategory result = await _context.ItemCategories.SingleAsync(x => x.Id == id);
             return result;
         }
 
