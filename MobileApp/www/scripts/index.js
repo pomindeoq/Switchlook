@@ -92,6 +92,18 @@ var User;
             App.Pages.AddPage(page);
         }());
 
+        // EDIT PROFILE
+        (function () {
+            var handler = function () {
+                //
+            };
+
+            var navigationTopData = new NavigationTopData(true, '<a href="#/settings"><span class="icon icon-arrow-left2"></span></a>', false, '', true, 'Edit Profile');
+
+            var page = new Page("Edit Profile", "/edit_profile", "pages/edit_profile/index.html", handler, true, true, navigationTopData, true);
+            App.Pages.AddPage(page);
+        }());
+
         // SIGN IN
         (function () {
             var handler = function () {
