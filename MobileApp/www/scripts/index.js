@@ -141,7 +141,9 @@ var User;
                 }
             };
 
-            var page = new Page("ExternalRegister", "/externalRegister", "pages/signin/registrationConfirmation.html", handler, false, false, null, false);
+            var navigationTopData = new NavigationTopData(false, '', false, '', true, 'Signup');
+
+            var page = new Page("ExternalRegister", "/externalRegister", "pages/signin/registrationConfirmation.html", handler, false, true, navigationTopData, false);
             App.Pages.AddPage(page);
         }());
 

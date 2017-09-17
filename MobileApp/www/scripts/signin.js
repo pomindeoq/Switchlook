@@ -1,4 +1,6 @@
 ﻿// initialize and setup facebook js sdk
+var fbAppId = 496342054036347;
+
 window.fbAsyncInit = function () {
     FB.init({
         appId: '496342054036347',
@@ -53,6 +55,7 @@ function statusChangeCallback(response) {
                         if (!returned.isRegistered) {
                             User.ExternalRegisterConfirmation = true;
                             User.ExternalRegisterType = "Facebook";
+                            User.ExternalLoginToken = data.AccessToken;
                             App.Pages.GoTo("/externalRegister");
                         }
                     }
@@ -75,14 +78,19 @@ function FBcheckLoginState() {
     });
 };
 
+function deleteCookie(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
 function facebookLogout() {
     FB.getLoginStatus(function (response) {
         if (response.status === 'connected') {
             FB.logout(function (response) {
-               console.log('user logged out')
+                console.log('user logged out');
             });
         }
     });
+    deleteCookie("fblo_" + fbAppId);
 }
 
 $(document).on("click", "#FB-button", function (e) {

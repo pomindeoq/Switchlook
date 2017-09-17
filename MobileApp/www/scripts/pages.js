@@ -67,6 +67,23 @@ function NavigationBottom() {
     this.Status = true;
 }
 
+function StretchContentTop() {
+    $('#content').css('top', '0');
+}
+
+function StretchContentBottom() {
+    $('#content').css('bottom', '0');
+}
+
+function ShrinkContentTop() {
+    $('#content').css('top', '12vw');
+}
+
+function ShrinkContentBottom() {
+    $('#content').css('bottom', '15.5vw');
+}
+
+
 NavigationBottom.prototype.Show = function() {
     if (this.Status === false) {
         $('#navigation-bottom').show();
@@ -151,13 +168,17 @@ function Page(name, route, url, handler, reqAuthentication = true, showNavigatio
             App.LoadingOverlay.Show();
             if (tempShowNavigationTop) {
                 App.NavigationTop.Show(tempNavigationTopData);
+                ShrinkContentTop();
             } else {
                 App.NavigationTop.Hide();
+                StretchContentTop();
             }
             if (tempNavigationBottom.Show) {
                 App.NavigationBottom.Show();
+                ShrinkContentBottom();
             } else {
                 App.NavigationBottom.Hide();
+                StretchContentBottom();
             }
             $('#app').load(tempUrl,
                 function () {
