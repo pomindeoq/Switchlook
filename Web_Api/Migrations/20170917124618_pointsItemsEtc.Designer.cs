@@ -11,9 +11,10 @@ using WebApi.Models;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(WebApiDataContext))]
-    partial class WebApiDataContextModelSnapshot : ModelSnapshot
+    [Migration("20170917124618_pointsItemsEtc")]
+    partial class pointsItemsEtc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
