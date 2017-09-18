@@ -79,6 +79,10 @@ namespace WebApi.Controllers
                 ExternalLoginInfo info = CustomExternalLoginInfo.FromLoginModel("Facebook", facebookData);
 
                 var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User logged in");
+                }
                 externalLoginResponse.IsRegistered = result.Succeeded;
                 externalLoginResponse.Result = result;
             }
@@ -156,6 +160,7 @@ namespace WebApi.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(loginModel.Username, loginModel.Password, true, false);
+                _logger.LogInformation("User logged in");
                 loginResponse.Result = result;
             }
             else
