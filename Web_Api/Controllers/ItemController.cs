@@ -23,6 +23,14 @@ namespace WebApi.Controllers
         }
 
         [Authorize]
+        [HttpGet, Route("getAllItems")]
+        public async Task<List<Item>> GetItems()
+        {
+            List<Item> items = await _context.Items.ToListAsync();
+            return items;
+        }
+
+        [Authorize]
         [HttpGet, Route("getItem/id={id}")]
         public async Task<Item> GetItem(int id)
         {
