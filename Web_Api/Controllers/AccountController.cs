@@ -32,7 +32,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost, Route("facebookRegister")]
-        public async Task<ExternalLoginResponse> FacebookRegister([FromBody] FacebookRegisterModel facebookRegisterModel)
+        public async Task<IResponse> FacebookRegister([FromBody] FacebookRegisterModel facebookRegisterModel)
         {
             ExternalLoginResponse externalLoginResponse = new ExternalLoginResponse();
             externalLoginResponse.IsModelValid = ModelState.IsValid;
@@ -69,7 +69,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost, Route("facebookSignIn")]
-        public async Task<ExternalLoginResponse> FacebookSignIn([FromBody] FacebookLoginModel facebookLoginModel)
+        public async Task<IResponse> FacebookSignIn([FromBody] FacebookLoginModel facebookLoginModel)
         {
             ExternalLoginResponse externalLoginResponse = new ExternalLoginResponse();
             externalLoginResponse.IsModelValid = ModelState.IsValid;
@@ -91,7 +91,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost, Route("googleRegister")]
-        public async Task<ExternalLoginResponse> GoogleRegister([FromBody] GoogleRegisterModel googleRegisterModel)
+        public async Task<IResponse> GoogleRegister([FromBody] GoogleRegisterModel googleRegisterModel)
         {
             ExternalLoginResponse externalLoginResponse = new ExternalLoginResponse();
             externalLoginResponse.IsModelValid = ModelState.IsValid;
@@ -128,7 +128,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost, Route("googleSignIn")]
-        public async Task<ExternalLoginResponse> GoogleSignIn([FromBody] GoogleLoginModel googleLoginModel)
+        public async Task<IResponse> GoogleSignIn([FromBody] GoogleLoginModel googleLoginModel)
         {
             ExternalLoginResponse externalLoginResponse = new ExternalLoginResponse();
             externalLoginResponse.IsModelValid = ModelState.IsValid;
@@ -149,7 +149,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost, Route("login")]
-        public async Task<LoginResponse> Login([FromBody]LoginModel loginModel)
+        public async Task<IResponse> Login([FromBody]LoginModel loginModel)
         {
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.IsModelValid = ModelState.IsValid;
@@ -167,7 +167,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost, Route("register")]
-        public async Task<RegisterResponse> Register([FromBody]RegisterModel registerModel)
+        public async Task<IResponse> Register([FromBody]RegisterModel registerModel)
         {
             RegisterResponse registerResponse = new RegisterResponse();
             registerResponse.IsModelValid = ModelState.IsValid;
@@ -196,8 +196,6 @@ namespace WebApi.Controllers
         public async void SignOut()
         {
             await _signInManager.SignOutAsync();
-            ClaimsPrincipal principal = new ClaimsPrincipal();
-            ExternalLoginInfo info = new ExternalLoginInfo(principal, "Facebook", "", "");
         }
 
         [Authorize]

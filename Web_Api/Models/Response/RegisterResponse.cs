@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace WebApi.Models.Response
 {
-    public class RegisterResponse
+    public class RegisterResponse : IResponse
     {
         public IEnumerable<string> Errors { get; set; }
         public bool IsModelValid { get; set; }
