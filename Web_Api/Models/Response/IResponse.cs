@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace WebApi.Models.Response
 {
-    public class Response : IResponse
+    public interface IResponse
     {
-        public IEnumerable<string> Errors { get; set; }
+        IEnumerable<string> Errors { get; set; }
     }
 }

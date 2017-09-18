@@ -6,17 +6,17 @@ using Microsoft.AspNetCore.Identity;
 
 namespace WebApi.Models.Response
 {
-    public class LoginResponse
+    public class RegisterResponse : IResponse
     {
         public IEnumerable<string> Errors { get; set; }
         public bool IsModelValid { get; set; }
-        public SignInResult Result { get; set; }
+        public bool Succeeded { get; set; }
 
-        public LoginResponse()
+        public RegisterResponse()
         {
             Errors = null;
             IsModelValid = false;
-            Result = null;
+            Succeeded = false;
         }
     }
 }

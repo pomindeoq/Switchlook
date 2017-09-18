@@ -56,6 +56,8 @@ namespace WebApi
                 };
             });
 
+            services.AddLogging();
+
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
@@ -69,14 +71,17 @@ namespace WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            var policyCollection = new HeaderPolicyCollection()
+            loggerFactory.AddConsole();
+            loggerFactory.AddDebug();
+
+            HeaderPolicyCollection policyCollection = new HeaderPolicyCollection()
                 .AddDefaultSecurityHeaders()
                 .AddCustomHeader("Access-Control-Allow-Origin", "*");
 

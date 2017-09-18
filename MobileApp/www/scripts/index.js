@@ -193,6 +193,7 @@ var User;
                 API.RegisterAccount(
                     jsonString,
                     function (returned) {
+                        console.log(returned);
                         $("#errors").empty();
                         if (returned.isModelValid) {
                             if (returned.succeeded) {
