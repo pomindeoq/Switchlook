@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Models;
+using WebApi.Models.Response;
+using WebApi.Models.Response.Item;
 
 namespace WebApi.Controllers
 {
@@ -22,12 +25,28 @@ namespace WebApi.Controllers
             _context = context;
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet, Route("getAllItems")]
-        public async Task<List<Item>> GetItems()
+        public async Task<IResponse> GetItems()
         {
-            List<Item> items = await _context.Items.ToListAsync();
-            return items;
+            ItemsResponse itemsResponse = new ItemsResponse();
+            var itemsz = await _context.Items
+                .Include(x => x.Category)
+                .Include(x => x.OwnerAccount).ToListAsync();
+
+            IEnumerable<dynamic> item = itemsz.Select(x => new
+            {
+                ItemId = x.Id,
+                CategoryName = x.Category.Name,
+                UserName = x.OwnerAccount.UserName,
+                PointValue = x.PointValue
+
+
+            });
+
+            itemsResponse.Items = item;
+
+            return itemsResponse;
         }
 
         [Authorize]
