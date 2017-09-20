@@ -54,7 +54,7 @@ namespace WebApi.Controllers
             await _context.SaveChangesAsync();
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet, Route("getAllItemCategories")]
         public async Task<List<ItemCategory>> GetAllItemCategories()
         {
