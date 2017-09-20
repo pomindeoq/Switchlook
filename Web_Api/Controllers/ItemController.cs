@@ -26,7 +26,7 @@ namespace WebApi.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet, Route("getAllItems")]
+        [HttpGet, Route("getItems")]
         public async Task<IResponse> GetItems()
         {
             ItemsResponse itemsResponse = new ItemsResponse();
