@@ -26,7 +26,7 @@ namespace WebApi.Controllers
         [HttpGet, Route("getAllItems")]
         public async Task<List<Item>> GetItems()
         {
-            List<Item> items = await _context.Items.ToListAsync();
+            List<Item> items = await _context.Items.Include(x => x.Category).ToListAsync();
             return items;
         }
 
