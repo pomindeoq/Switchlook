@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using WebApi.Utils.ValidationAttributes;
 
-namespace WebApi.Models
+namespace WebApi.Models.Accounts
 {
     public class Account : IdentityUser
     {

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Models.Accounts;
+using WebApi.Models.ItemCategories;
+using WebApi.Models.Items;
 
 namespace WebApi.Models
 {

@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using NetEscapades.AspNetCore.SecurityHeaders;
 using WebApi.Models;
+using WebApi.Models.Accounts;
 
 namespace WebApi
 {
