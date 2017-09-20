@@ -38,7 +38,7 @@ namespace WebApi.Controllers
             {
                 ItemId = x.Id,
                 CategoryName = x.Category.Name,
-                UserName = x.OwnerAccount.UserName,
+                OwnerUserName = x.OwnerAccount.UserName,
                 PointValue = x.PointValue
 
 
