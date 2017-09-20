@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Response\Item\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
