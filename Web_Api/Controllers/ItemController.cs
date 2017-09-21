@@ -37,7 +37,8 @@ namespace WebApi.Controllers
             ItemsResponse itemsResponse = new ItemsResponse();
             var itemsz = await _context.Items
                 .Include(x => x.Category)
-                .Include(x => x.OwnerAccount).ToListAsync();
+                .Include(x => x.OwnerAccount)
+                .ToListAsync();
 
             IEnumerable<IItemResponseModel> item = itemsz.Select(x => new ItemResponseModel
             {
@@ -89,27 +90,48 @@ namespace WebApi.Controllers
 
         [Authorize]
         [HttpPost, Route("createItemCategory")]
-        public async Task CreateItemCategory([FromBody] ItemCategory itemCategory)
+        public async Task CreateItemCategory([FromBody] CreateItemCategoryModel itemCategoryModel)
         {
+            ItemCategory itemCategory = new ItemCategory();
+            itemCategory.Name = itemCategoryModel.Name;
             _context.ItemCategories.Add(itemCategory);
             await _context.SaveChangesAsync();
         }
 
         [Authorize]
         [HttpGet, Route("getItemCategories")]
-        public async Task<List<ItemCategory>> GetItemCategories()
+        public async Task<IResponse> GetItemCategories()
         {
+            ItemCategoriesResponse itemCategoriesResponse = new ItemCategoriesResponse();
+            var itemCategories = await _context.ItemCategories.ToListAsync();
 
-            List<ItemCategory> itemCategories = await _context.ItemCategories.ToListAsync();
-            return itemCategories;
+            IEnumerable<IItemCategoryResponseModel> itemCategoriesReturn = itemCategories.Select(x => new ItemCategoryResponseModel
+            {
+                ItemCategoryId = x.Id,
+                CategoryName = x.Name
+            });
+
+            itemCategoriesResponse.ItemCategories = itemCategoriesReturn;
+
+            return itemCategoriesResponse;
         }
 
         [Authorize]
         [HttpGet, Route("getItemCategory/id={id}")]
-        public async Task<ItemCategory> GetItemCategroy(int id)
+        public async Task<IResponse> GetItemCategroy(int id)
         {
-            ItemCategory result = await _context.ItemCategories.SingleAsync(x => x.Id == id);
-            return result;
+            ItemCategoryResponse itemCategoryResponse = new ItemCategoryResponse();
+            ItemCategory itemCategory = await _context.ItemCategories.SingleAsync(x => x.Id == id);
+
+            IItemCategoryResponseModel itemCategoryReturn = new ItemCategoryResponseModel()
+            {
+                ItemCategoryId = itemCategory.Id,
+                CategoryName = itemCategory.Name
+            };
+
+            itemCategoryResponse.ItemCategory = itemCategoryReturn;
+
+            return itemCategoryResponse;
         }
 
     }

@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApi.Models.Items;
 using WebApi.Models.Response;
 
-namespace WebApi.Models.Items
+namespace WebApi.Models.ItemCategories
 {
-    public class ItemResponse : IResponse
+    public class ItemCategoriesResponse : IResponse
     {
         public IEnumerable<string> Errors { get; set; }
-        public IItemResponseModel Item { get; set; }
+        public IEnumerable<IItemCategoryResponseModel> ItemCategories { get; set; }
     }
 }
