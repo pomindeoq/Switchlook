@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using WebApi.Models;
+using WebApi.Models.Accounts;
 
 namespace WebApi.Utils
 {

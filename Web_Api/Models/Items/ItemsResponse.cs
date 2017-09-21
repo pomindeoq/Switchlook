@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApi.Models.Response;
 
-namespace WebApi.Models.Response.Item
+namespace WebApi.Models.Items
 {
     public class ItemsResponse : IResponse
     {
         public IEnumerable<string> Errors { get; set; }
 
-        public IEnumerable<dynamic> Items { get; set; }
+        public IEnumerable<IItemResponseModel> Items { get; set; }
 
     }
 }

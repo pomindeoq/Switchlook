@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using WebApi.Models.Response;
 
-namespace WebApi.Models.Response
+namespace WebApi.Models.Accounts
 {
     public class LoginResponse : IResponse
     {

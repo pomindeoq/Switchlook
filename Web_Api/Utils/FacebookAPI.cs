@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WebApi.Models;
+using WebApi.Models.Accounts;
 
 namespace WebApi.Utils
 {

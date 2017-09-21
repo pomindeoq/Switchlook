@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApi.Models.Accounts;
+using WebApi.Models.ItemCategories;
 
-namespace WebApi.Models
+namespace WebApi.Models.Items
 {
     public class Item
     {

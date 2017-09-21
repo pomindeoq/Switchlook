@@ -10,9 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Data.Edm.Csdl;
 using Microsoft.EntityFrameworkCore.Query.Internal;
-using WebApi.Models;
-using WebApi.Models.Response;
 using Microsoft.Extensions.Logging;
+using WebApi.Models;
+using WebApi.Models.Accounts;
+using WebApi.Models.Response;
 using WebApi.Utils;
 
 namespace WebApi.Controllers
@@ -213,7 +214,7 @@ namespace WebApi.Controllers
             }
             return "false. not Authenticated";
         }
-
+        [Authorize]           
         [HttpGet, Route("isAuthenticated")]
         public bool IsAuthenticated()
         {
