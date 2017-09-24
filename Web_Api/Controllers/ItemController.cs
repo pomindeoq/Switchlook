@@ -76,7 +76,7 @@ namespace WebApi.Controllers
             return itemResponse;
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpPost, Route("createItem")]
         public async Task CreateItem([FromBody] CreateItemModel itemModel)
         {

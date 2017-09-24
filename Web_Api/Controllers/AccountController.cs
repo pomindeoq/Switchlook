@@ -154,33 +154,32 @@ namespace WebApi.Controllers
         }
 
         [HttpPost, Route("login")]
-        public async Task<IResponse> Login([FromBody]LoginModel loginModel)
-        {
+        public async Task<IResponse> Login([FromBody]LoginModel model)
+        { 
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.IsModelValid = ModelState.IsValid;
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(loginModel.Username, loginModel.Password, true, false);
+                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, true, false);
                 _logger.LogInformation("User logged in");
                 loginResponse.Result = result;
             }
             else
             {
-                loginResponse.Errors = ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage));
-                
+                loginResponse.Errors = ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage));              
             }
             return loginResponse;
         }
 
         [HttpPost, Route("register")]
-        public async Task<IResponse> Register([FromBody]RegisterModel registerModel)
+        public async Task<IResponse> Register([FromBody]RegisterModel model)
         {
             RegisterResponse registerResponse = new RegisterResponse();
             registerResponse.IsModelValid = ModelState.IsValid;
             if (ModelState.IsValid)
             {
-                var user = new Account { UserName = registerModel.Username, Email = registerModel.Email };
-                var result = await _userManager.CreateAsync(user, registerModel.Password);
+                var user = new Account { UserName = model.Username, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
