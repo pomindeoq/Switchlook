@@ -13,6 +13,7 @@ using WebApi.Models;
 using WebApi.Models.Accounts;
 using WebApi.Models.ItemCategories;
 using WebApi.Models.Items;
+using WebApi.Models.Points;
 using WebApi.Models.Response;
 
 namespace WebApi.Controllers
@@ -134,5 +135,65 @@ namespace WebApi.Controllers
             return itemCategoryResponse;
         }
 
+        [AllowAnonymous]
+        [HttpPost, Route("exchangeItem")]
+        public async Task<IResponse> ExchangeItem([FromBody] ItemExchangeViewModel itemExchangeViewModel)
+        {
+            ItemExchangeResponse itemExchangeResponse = new ItemExchangeResponse();
+            List<string> errors = new List<string>();
+
+            Item item = await _context.Items.FirstOrDefaultAsync(x => x.Id == itemExchangeViewModel.ItemId);
+            if (item != null)
+            {
+                Account newOwnerAccount =
+                    await _userManager.FindByNameAsync(itemExchangeViewModel.NewOwnerAccountUserName);
+                if (newOwnerAccount != null)
+                {
+                    PointsModel points = await _context.Points.SingleOrDefaultAsync(x => x.Account == newOwnerAccount);
+                    if (points.Value >= itemExchangeViewModel.PointValue)
+                    {
+                        AddPoints addPoints = new AddPoints(_context);
+                        await addPoints.ToUserAsync(newOwnerAccount, -itemExchangeViewModel.PointValue);
+
+                        Account oldOwnerAccount = item.OwnerAccount;
+                        Item itemc = new Item
+                        {
+                            Id = item.Id,
+                            Category = item.Category,
+                            PointValue = item.PointValue,
+                            OwnerAccount = newOwnerAccount
+                        };
+
+                        _context.Items.Update(itemc);
+                        await _context.SaveChangesAsync();
+
+                        ItemExchangeModel itemExchangeModel = new ItemExchangeModel
+                        {
+                            Item = itemc,
+                            OldOwnerAccount = oldOwnerAccount,
+                            NewOwnerAccount = itemc.OwnerAccount,
+                            PointValue = itemExchangeViewModel.PointValue
+                        };
+
+                        ItemExchange itemExchange = new ItemExchange(_context);
+                        itemExchange.Set(itemExchangeModel);
+                        itemExchangeResponse = await itemExchange.CommitAsync();
+                    }
+                    else
+                    {
+                        errors.Add($"Not enough points for user :{newOwnerAccount.UserName}");
+                    }  
+                }
+                else
+                {
+                    errors.Add("User not found.");
+                }
+            }
+            else
+            {
+                errors.Add("Item not found.");
+            }
+            return itemExchangeResponse;
+        }
     }
 }

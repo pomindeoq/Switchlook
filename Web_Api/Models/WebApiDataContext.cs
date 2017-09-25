@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Models.Accounts;
 using WebApi.Models.ItemCategories;
 using WebApi.Models.Items;
+using WebApi.Models.Points;
 
 namespace WebApi.Models
 {
@@ -19,6 +20,7 @@ namespace WebApi.Models
         public DbSet<Account> Accounts { get; set; }
         public DbSet<ItemCategory> ItemCategories { get; set; }
         public DbSet<Item> Items { get; set; }
-        public DbSet<Points> Points { get; set; }
+        public DbSet<PointsModel> Points { get; set; }
+        public DbSet<ItemExchangeModel> ItemExchangeLog { get; set; }
     }
 }

@@ -24,9 +24,11 @@ namespace WebApi.Controllers
     {
         private readonly UserManager<Account> _userManager;
         private readonly SignInManager<Account> _signInManager;
+        private readonly WebApiDataContext _context;
         private readonly ILogger _logger;
-        public AccountController(UserManager<Account> userManager, SignInManager<Account> signInManager, ILogger<AccountController> logger)
+        public AccountController(WebApiDataContext context, UserManager<Account> userManager, SignInManager<Account> signInManager, ILogger<AccountController> logger)
         {
+            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
@@ -47,9 +49,8 @@ namespace WebApi.Controllers
                 var result = await _userManager.CreateAsync(account);
                 if (result.Succeeded)
                 {
-
                     result = await _userManager.AddLoginAsync(account, info);
-
+                    account.SetUpPoints(_context);
                     if (result.Succeeded)
                     {
                         await _signInManager.SignInAsync(account, true);
@@ -110,8 +111,10 @@ namespace WebApi.Controllers
                 var result = await _userManager.CreateAsync(account);
                 if (result.Succeeded)
                 {
-
+                    
                     result = await _userManager.AddLoginAsync(account, info);
+                    account.SetUpPoints(_context);
+                    await _context.SaveChangesAsync();
 
                     if (result.Succeeded)
                     {
@@ -183,6 +186,7 @@ namespace WebApi.Controllers
 
                 if (result.Succeeded)
                 {
+                    user.SetUpPoints(_context);
                     await _signInManager.SignInAsync(user, true);
                 }
                 registerResponse.Succeeded = result.Succeeded;

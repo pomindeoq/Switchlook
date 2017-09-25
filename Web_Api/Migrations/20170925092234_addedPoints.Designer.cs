@@ -11,9 +11,10 @@ using WebApi.Models;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(WebApiDataContext))]
-    partial class WebApiDataContextModelSnapshot : ModelSnapshot
+    [Migration("20170925092234_addedPoints")]
+    partial class addedPoints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,31 +212,7 @@ namespace WebApi.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("WebApi.Models.Items.ItemExchangeModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("ItemId");
-
-                    b.Property<string>("NewOwnerAccountId");
-
-                    b.Property<string>("OldOwnerAccountId");
-
-                    b.Property<int>("PointValue");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("NewOwnerAccountId");
-
-                    b.HasIndex("OldOwnerAccountId");
-
-                    b.ToTable("ItemExchangeLog");
-                });
-
-            modelBuilder.Entity("WebApi.Models.PointsModel", b =>
+            modelBuilder.Entity("WebApi.Models.Points", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -307,22 +284,7 @@ namespace WebApi.Migrations
                         .HasForeignKey("OwnerAccountId");
                 });
 
-            modelBuilder.Entity("WebApi.Models.Items.ItemExchangeModel", b =>
-                {
-                    b.HasOne("WebApi.Models.Items.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId");
-
-                    b.HasOne("WebApi.Models.Accounts.Account", "NewOwnerAccount")
-                        .WithMany()
-                        .HasForeignKey("NewOwnerAccountId");
-
-                    b.HasOne("WebApi.Models.Accounts.Account", "OldOwnerAccount")
-                        .WithMany()
-                        .HasForeignKey("OldOwnerAccountId");
-                });
-
-            modelBuilder.Entity("WebApi.Models.PointsModel", b =>
+            modelBuilder.Entity("WebApi.Models.Points", b =>
                 {
                     b.HasOne("WebApi.Models.Accounts.Account", "Account")
                         .WithMany()
