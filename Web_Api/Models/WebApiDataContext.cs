@@ -19,6 +19,6 @@ namespace WebApi.Models
         public DbSet<Account> Accounts { get; set; }
         public DbSet<ItemCategory> ItemCategories { get; set; }
         public DbSet<Item> Items { get; set; }
-        public DbSet<Points> Points { get; set; }
+        public DbSet<PointsModel> Points { get; set; }
     }
 }

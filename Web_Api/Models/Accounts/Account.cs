@@ -20,7 +20,7 @@ namespace WebApi.Models.Accounts
 
         public void SetUpPoints(WebApiDataContext context)
         {
-            context.Points.Add(new Points { Account = this, Value = 0 });
+            context.Points.Add(new PointsModel { Account = this, Value = 0 });
         }
 
     }

@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WebApi.Models;
 using WebApi.Models.Accounts;
+using WebApi.Models.Points;
 using WebApi.Models.Response;
 
 namespace WebApi.Controllers
@@ -26,10 +28,36 @@ namespace WebApi.Controllers
             _userManager = userManager;
         }
 
-        private string AddPoints()
+        private async Task<IResponse> AddPoints([FromBody]AddPointsModel addPointsModel)
         {
+            AddPointsResponse addPointsResponse = new AddPointsResponse();
+            PointsModel points = await _context.Points.SingleOrDefaultAsync(x => x.Account.UserName == addPointsModel.UserName);
+            Account account = await _userManager.FindByNameAsync(addPointsModel.UserName);
+            if (account == null)
+            {
+                List<string> errors = new List<string>();
+                errors.Add("Username does not exist.");
+                addPointsResponse.Errors = errors;
+            }
+            else
+            {
+                if (points == null)
+                {
 
-            return "Yo";
+                    _context.Points.Add(new PointsModel { Account = account, Value = 0 });
+                    points = await _context.Points.SingleOrDefaultAsync(x => x.Account.UserName == addPointsModel.UserName);
+                    await _context.SaveChangesAsync();
+                }
+
+                points.Value = points.Value + addPointsModel.Value;
+
+                _context.Points.Update(points);
+                await _context.SaveChangesAsync();
+                addPointsResponse.Succeeded = true;
+            }
+
+
+            return addPointsResponse;
         }
     }
 }

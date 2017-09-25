@@ -6,7 +6,7 @@ using WebApi.Models.Accounts;
 
 namespace WebApi.Models
 {
-    public class Points
+    public class PointsModel
     {
         public int Id { get; set; }
         public Account Account { get; set; }
