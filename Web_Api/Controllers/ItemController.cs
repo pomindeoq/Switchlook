@@ -78,12 +78,12 @@ namespace WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost, Route("createItem")]
-        public async Task CreateItem([FromBody] CreateItemModel itemModel)
+        public async Task CreateItem([FromBody] CreateItemModel createItemModel)
         {
             Item item = new Item();
-            item.OwnerAccount = await _userManager.GetUserAsync(this.User);
+            item.OwnerAccount = await _userManager.FindByIdAsync(createItemModel.UserId);
             item.Category = await _context.ItemCategories.SingleAsync(x => x.Id == item.Id);
-            item.PointValue = itemModel.PointValue;
+            item.PointValue = createItemModel.PointValue;
             _context.Items.Add(item);
             await _context.SaveChangesAsync();
         }
