@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,8 @@ namespace WebApi.Controllers
             _userManager = userManager;
         }
 
+        [AllowAnonymous]
+        [HttpPost, Route("addPoints")]
         private async Task<IResponse> AddPoints([FromBody]AddPointsModel addPointsModel)
         {
             AddPointsResponse addPointsResponse = new AddPointsResponse();

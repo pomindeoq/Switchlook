@@ -20,5 +20,6 @@ namespace WebApi.Models
         public DbSet<ItemCategory> ItemCategories { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<PointsModel> Points { get; set; }
+        public DbSet<ItemExchangeModel> ItemExchangeLog { get; set; }
     }
 }
