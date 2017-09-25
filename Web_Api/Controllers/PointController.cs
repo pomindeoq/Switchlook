@@ -31,7 +31,7 @@ namespace WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost, Route("addPoints")]
-        private async Task<IResponse> AddPoints([FromBody]AddPointsModel addPointsModel)
+        public async Task<IResponse> AddPoints([FromBody]AddPointsModel addPointsModel)
         {
             // ONLY FOR EVENT!!!
             AddPointsResponse addPointsResponse = new AddPointsResponse();
@@ -49,8 +49,9 @@ namespace WebApi.Controllers
                 {
 
                     _context.Points.Add(new PointsModel { Account = account, Value = 0 });
-                    points = await _context.Points.SingleOrDefaultAsync(x => x.Account.UserName == addPointsModel.UserName);
                     await _context.SaveChangesAsync();
+                    points = await _context.Points.SingleOrDefaultAsync(x => x.Account.UserName == addPointsModel.UserName);
+                   
                 }
 
                 points.Value = points.Value + addPointsModel.Value;

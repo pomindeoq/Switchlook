@@ -142,7 +142,7 @@ namespace WebApi.Controllers
             ItemExchangeResponse itemExchangeResponse = new ItemExchangeResponse();
             List<string> errors = new List<string>();
 
-            Item item = await _context.Items.FirstOrDefaultAsync(x => x.Id == itemExchangeViewModel.ItemId);
+            Item item = await _context.Items.Include(x=>x.Category).FirstOrDefaultAsync(x => x.Id == itemExchangeViewModel.ItemId);
             if (item != null)
             {
                 Account newOwnerAccount =
