@@ -6,16 +6,22 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using WebApi.Utils.ValidationAttributes;
 
 namespace WebApi.Models.Accounts
 {
+    
     public class Account : IdentityUser
     {
         public int TestValue { get; set; }
-      
+
+        public void SetUpPoints(WebApiDataContext context)
+        {
+            context.Points.Add(new Points { Account = this, Value = 0 });
+        }
 
     }
 

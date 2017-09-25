@@ -11,9 +11,10 @@ using WebApi.Models;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(WebApiDataContext))]
-    partial class WebApiDataContextModelSnapshot : ModelSnapshot
+    [Migration("20170925091006_pointsUpdate")]
+    partial class pointsUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -287,7 +288,8 @@ namespace WebApi.Migrations
                 {
                     b.HasOne("WebApi.Models.Accounts.Account", "Account")
                         .WithMany()
-                        .HasForeignKey("AccountId");
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
