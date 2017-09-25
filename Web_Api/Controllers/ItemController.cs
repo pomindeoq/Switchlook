@@ -88,7 +88,7 @@ namespace WebApi.Controllers
             await _context.SaveChangesAsync();
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpPost, Route("createItemCategory")]
         public async Task CreateItemCategory([FromBody] CreateItemCategoryModel itemCategoryModel)
         {
@@ -98,7 +98,7 @@ namespace WebApi.Controllers
             await _context.SaveChangesAsync();
         }
       
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet, Route("getItemCategories")]
         public async Task<IResponse> GetItemCategories()
         {
