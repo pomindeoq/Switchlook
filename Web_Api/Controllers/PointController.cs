@@ -33,6 +33,7 @@ namespace WebApi.Controllers
         [HttpPost, Route("addPoints")]
         private async Task<IResponse> AddPoints([FromBody]AddPointsModel addPointsModel)
         {
+            // ONLY FOR EVENT!!!
             AddPointsResponse addPointsResponse = new AddPointsResponse();
             PointsModel points = await _context.Points.SingleOrDefaultAsync(x => x.Account.UserName == addPointsModel.UserName);
             Account account = await _userManager.FindByNameAsync(addPointsModel.UserName);

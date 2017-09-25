@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using WebApi.Models.Points;
 using WebApi.Utils.ValidationAttributes;
 
 namespace WebApi.Models.Accounts

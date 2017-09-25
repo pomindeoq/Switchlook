@@ -22,7 +22,7 @@ namespace WebApi.Models.Items
             ItemExchangeModel = itemExchangeModel;
         }
 
-        public async Task<IResponse> CommitAsync()
+        public async Task<ItemExchangeResponse> CommitAsync()
         {
             ItemExchangeResponse itemExchangeResponse = new ItemExchangeResponse();
             List<string> errors = new List<string>();

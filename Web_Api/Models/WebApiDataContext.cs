@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Models.Accounts;
 using WebApi.Models.ItemCategories;
 using WebApi.Models.Items;
+using WebApi.Models.Points;
 
 namespace WebApi.Models
 {
