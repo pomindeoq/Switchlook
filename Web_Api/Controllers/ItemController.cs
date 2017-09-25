@@ -156,22 +156,16 @@ namespace WebApi.Controllers
                         await addPoints.ToUserAsync(newOwnerAccount, -itemExchangeViewModel.PointValue);
 
                         Account oldOwnerAccount = item.OwnerAccount;
-                        Item itemc = new Item
-                        {
-                            Id = item.Id,
-                            Category = item.Category,
-                            PointValue = item.PointValue,
-                            OwnerAccount = newOwnerAccount
-                        };
+                        item.OwnerAccount = newOwnerAccount;
 
-                        _context.Items.Update(itemc);
+                        _context.Items.Update(item);
                         await _context.SaveChangesAsync();
 
                         ItemExchangeModel itemExchangeModel = new ItemExchangeModel
                         {
-                            Item = itemc,
+                            Item = item,
                             OldOwnerAccount = oldOwnerAccount,
-                            NewOwnerAccount = itemc.OwnerAccount,
+                            NewOwnerAccount = item.OwnerAccount,
                             PointValue = itemExchangeViewModel.PointValue
                         };
 
