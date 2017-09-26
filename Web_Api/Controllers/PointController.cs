@@ -30,6 +30,27 @@ namespace WebApi.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet, Route("getPointsValue={userId}")]
+        public async Task<IResponse> GetPointsValue(string userId)
+        {
+            GetPointsValueResponse getPointsValueResponse = new GetPointsValueResponse();
+            
+            Account account = await _userManager.FindByIdAsync(userId);
+            if (account == null)
+            {
+                List<string> errors = new List<string>();
+                errors.Add("UserId does not exist.");
+                getPointsValueResponse.Errors = errors;
+            }
+            else
+            {
+                PointsModel points = await _context.Points.SingleOrDefaultAsync(x => x.Account.Id == userId);
+                getPointsValueResponse.Points = points.Value;
+            }
+            return getPointsValueResponse;
+        }
+
+        [AllowAnonymous]
         [HttpPost, Route("addPoints")]
         public async Task<IResponse> AddPoints([FromBody]AddPointsModel addPointsModel)
         {
