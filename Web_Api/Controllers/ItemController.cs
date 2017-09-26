@@ -85,6 +85,10 @@ namespace WebApi.Controllers
             item.OwnerAccount = await _userManager.FindByIdAsync(createItemModel.UserId);
             item.Category = await _context.ItemCategories.SingleAsync(x => x.Id == createItemModel.CategoryId);
             item.PointValue = createItemModel.PointValue;
+
+            AddPoints addPoints = new AddPoints(_context);
+            await addPoints.ToUserAsync(item.OwnerAccount, item.PointValue);
+
             _context.Items.Add(item);
             await _context.SaveChangesAsync();
         }

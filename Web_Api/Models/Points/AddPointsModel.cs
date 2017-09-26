@@ -8,6 +8,6 @@ namespace WebApi.Models.Points
     public class AddPointsModel
     {
         public string UserName { get; set; }
-        public int Value { get; set; }
+        public double Value { get; set; }
     }
 }

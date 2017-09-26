@@ -15,7 +15,7 @@ namespace WebApi.Models.Points
             _context = context;
         }
 
-        public async Task ToUserAsync(Account account, int pointValue)
+        public async Task ToUserAsync(Account account, double pointValue)
         {
             PointsModel points = await _context.Points.SingleOrDefaultAsync(x => x.Account == account);
             if (points != null)

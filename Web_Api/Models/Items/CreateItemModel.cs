@@ -9,6 +9,6 @@ namespace WebApi.Models.Items
     {
         public string UserId { get; set; }
         public int CategoryId { get; set; }
-        public int PointValue { get; set; }
+        public double PointValue { get; set; }
     }
 }
