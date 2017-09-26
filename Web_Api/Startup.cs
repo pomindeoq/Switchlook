@@ -33,7 +33,7 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             // Database
-            var sqlConnectionString = Configuration.GetConnectionString("SwitchLook");
+            var sqlConnectionString = "server=164.132.233.40;userid=switchlook;password=teoy3RroLKqqWpm0;database=switchlook;";
             services.AddDbContext<WebApiDataContext>(options =>
                 options.UseMySql(
                     sqlConnectionString
@@ -58,12 +58,6 @@ namespace WebApi
             });
 
             services.AddLogging();
-
-            services.AddAuthentication().AddFacebook(facebookOptions =>
-            {
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            });
 
             services.AddMvc();
 

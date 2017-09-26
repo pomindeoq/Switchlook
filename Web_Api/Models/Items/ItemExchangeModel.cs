@@ -12,6 +12,6 @@ namespace WebApi.Models.Items
         public Item Item { get; set; }
         public Account OldOwnerAccount { get; set; }
         public Account NewOwnerAccount { get; set; }
-        public int PointValue { get; set; }
+        public double PointValue { get; set; }
     }
 }
