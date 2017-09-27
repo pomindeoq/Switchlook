@@ -20,7 +20,7 @@ namespace WebApi.Controllers
     public class PointController : Controller
     {
 
-        private WebApiDataContext _context;
+        private readonly WebApiDataContext _context;
         private readonly UserManager<Account> _userManager;
 
         public PointController(WebApiDataContext context, UserManager<Account> userManager)
@@ -86,21 +86,21 @@ namespace WebApi.Controllers
             return addPointsResponse;
         }
 
-        [AllowAnonymous]
-        [HttpGet, Route("halfPoints")]
-        public async Task HalfPoints()
-        {
-            var points = await _context.Points.Include(x => x.Account).ToListAsync();
-            int count = points.Count;
-            for (int i = 0; i < count; i++)
-            {
-                if (points[i].Value > 0.0)
-                {
-                    points[i].Value = points[i].Value / 2;
-                    _context.Points.Update(points[i]);
-                }               
-            }
-            await _context.SaveChangesAsync();
-        }
+        //[AllowAnonymous]
+        //[HttpGet, Route("halfPoints")]
+        //public async Task HalfPoints()
+        //{
+        //    var points = await _context.Points.Include(x => x.Account).ToListAsync();
+        //    int count = points.Count;
+        //    for (int i = 0; i < count; i++)
+        //    {
+        //        if (points[i].Value > 0.0)
+        //        {
+        //            points[i].Value = points[i].Value / 2;
+        //            _context.Points.Update(points[i]);
+        //        }               
+        //    }
+        //    await _context.SaveChangesAsync();
+        //}
     }
 }
