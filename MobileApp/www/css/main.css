@@ -457,5 +457,56 @@ button.facebook-auth span.facebook-icon {
     
 }
 
-                
+.no {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
 
+.no a {
+    text-decoration: none;
+    font-size: 7vw;
+    color: grey
+}
+
+.no p {
+    font-size: 5vw;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding-right: 45%;
+    color:grey;
+}
+
+.previous {
+        display:flex;      
+        justify-content:center;
+        margin-top:15%
+}
+
+.previous a {
+    text-decoration: none;
+    font-size: 9vw;
+    color:grey;
+}
+
+
+.yes {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.yes a {
+    text-decoration: none;
+    font-size: 7vw;
+    color: cyan;
+    
+}
+
+.yes p {
+    font-size: 5vw;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding-left: 45%;
+    color:cyan;
+}

@@ -11,6 +11,8 @@ namespace WebApi.Models.Points
         public int Id { get; set; }
         public Account Account { get; set; }
         public double Value { get; set; }
+      //  public string Category { get; set; }
+
 
     }
 }
