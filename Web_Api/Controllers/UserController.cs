@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Models.Points;
 using WebApi.Models.Response;
 using Microsoft.AspNetCore.Authorization;
+using WebApi.Models.Accounts;
 
 namespace WebApi.Controllers
 {
@@ -46,10 +47,23 @@ namespace WebApi.Controllers
             
         }
 
-        // GET: User/Details/5
-        public ActionResult Details(int id)
+        [AllowAnonymous]
+        [HttpGet, Route("getUser/id={id}")]
+        public async Task<IResponse> GetUser(string id)
         {
-            return View();
+            UserResponse userResponse = new UserResponse();
+            Account account = await _context.Users.SingleAsync(x => x.Id == id);
+
+            IUserResponseModel userReturn = new UserResponseModel()
+            {
+                UserID = account.Id,
+                UserName = account.UserName,
+                UserEmail = account.Email,               
+            };
+
+            userResponse.User = userReturn;
+
+            return userResponse;
         }
 
         // GET: User/Create
