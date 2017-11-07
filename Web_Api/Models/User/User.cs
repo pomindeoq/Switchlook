@@ -8,11 +8,11 @@ namespace WebApi.Models.User
 {
     public class User
     {
-        public string ID { get; set; }
+        public Account ID { get; set; }
 
-        public string Name { get; set; }
+        public Account Name { get; set; }
 
-        public string Email { get; set; }
+        public Account Email { get; set; }
 
         public double Points { get; set; }
 
