@@ -11,6 +11,7 @@ using WebApi.Models.Points;
 using WebApi.Models.Response;
 using Microsoft.AspNetCore.Authorization;
 using WebApi.Models.Accounts;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApi.Controllers
 {
@@ -19,10 +20,12 @@ namespace WebApi.Controllers
     public class UserController : Controller
     {
         private WebApiDataContext _context;
+        private readonly UserManager<Account> _userManager;
 
-        public UserController(WebApiDataContext context)
+        public UserController(WebApiDataContext context, UserManager<Account> userManager)
         {
-            _context = context;           
+            _context = context;
+            _userManager = userManager;
         }
 
         // GET: User
@@ -65,6 +68,18 @@ namespace WebApi.Controllers
 
             return userResponse;
         }
+
+        //[AllowAnonymous]
+        //[HttpPost, Route("updateUser/id={id}")]
+        //public async Task UpdateUser([FromBody] UpdateUserModel updateUserModel)
+        //{
+        //    User user = new User();
+        //    user.Name = await _userManager.FindByIdAsync(updateUserModel.UserName);
+        //    user.Email = await _userManager.FindByEmailAsync(updateUserModel.UserEmail);
+        //    user.Points = updateUserModel.UserPoints;
+        //    _context.Users.Add(user);
+        //    await _context.SaveChangesAsync();
+        //}
 
         // GET: User/Create
         public ActionResult Create()
