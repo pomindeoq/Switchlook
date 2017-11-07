@@ -39,6 +39,7 @@ namespace WebApi.Controllers
 
             IEnumerable<IUserResponseModel> usersReturn = users.Select(x => new UserResponseModel
             {
+                UserID = x.Id,
                 UserName = x.UserName,
                 UserEmail = x.Email
                          
