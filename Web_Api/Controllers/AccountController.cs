@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -10,7 +15,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Data.Edm.Csdl;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using WebApi.Models;
 using WebApi.Models.Accounts;
 using WebApi.Models.Response;
@@ -25,13 +32,22 @@ namespace WebApi.Controllers
         private readonly UserManager<Account> _userManager;
         private readonly SignInManager<Account> _signInManager;
         private readonly WebApiDataContext _context;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger _logger;
-        public AccountController(WebApiDataContext context, UserManager<Account> userManager, SignInManager<Account> signInManager, ILogger<AccountController> logger)
+        private readonly IConfiguration _config;
+        public AccountController(WebApiDataContext context, 
+            UserManager<Account> userManager, 
+            SignInManager<Account> signInManager, 
+            ILogger<AccountController> logger, 
+            RoleManager<IdentityRole> roleManager ,
+            IConfiguration config)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _logger = logger;
+            _config = config;
         }
 
         [HttpPost, Route("facebookRegister")]
@@ -57,7 +73,6 @@ namespace WebApi.Controllers
                     }
 
                 }
-
                 externalLoginResponse.CreateResult = result;
                 externalLoginResponse.Errors = result.Errors.Select(x => x.Description);
             }
@@ -166,10 +181,12 @@ namespace WebApi.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, true, false);
                 _logger.LogInformation("User logged in");
                 loginResponse.Result = result;
+
+                HttpContext.Response.Cookies.Append("TestCookieName", "ValueForTestCookie");
             }
             else
             {
-                loginResponse.Errors = ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage));              
+                loginResponse.Errors = ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage));
             }
             return loginResponse;
         }
@@ -207,7 +224,7 @@ namespace WebApi.Controllers
             await _signInManager.SignOutAsync();
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "Identity.Application, Bearer")]
         [HttpGet, Route("Restricted")]
         public string Restricted()
         {
@@ -217,7 +234,8 @@ namespace WebApi.Controllers
             }
             return "false. not Authenticated";
         }
-        [Authorize]           
+        
+        [Authorize]
         [HttpGet, Route("isAuthenticated")]
         public bool IsAuthenticated()
         {
@@ -227,5 +245,46 @@ namespace WebApi.Controllers
             }
             return false;
         }
+
+        [AllowAnonymous]
+        [HttpPost, Route("token")]
+        public async Task<IActionResult> GenerateToken([FromBody] LoginModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(model.Username);
+
+                var userclaims = await _userManager.GetClaimsAsync(user);
+
+                if (user != null)
+                {
+                    var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                    if (result.Succeeded)
+                    {
+
+                        var claims = new[]
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, user.Id, ClaimValueTypes.String),
+                            new Claim(ClaimTypes.Name, user.UserName, ClaimValueTypes.String),
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                        };
+
+                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
+                        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                        var token = new JwtSecurityToken(_config["Tokens:Issuer"],
+                            _config["Tokens:Issuer"],
+                            claims,
+                            expires: DateTime.Now.AddMinutes(30),
+                            signingCredentials: creds);
+
+                        return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+                    }
+                }
+            }
+
+            return BadRequest("Could not create token");
+        }
+
     }
 }
