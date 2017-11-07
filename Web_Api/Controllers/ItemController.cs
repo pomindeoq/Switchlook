@@ -193,5 +193,23 @@ namespace WebApi.Controllers
             }
             return itemExchangeResponse;
         }
+
+        [AllowAnonymous]
+        [HttpGet, Route("deleteItem/id={id}")]
+        public async Task DeleteItem(int id)
+        {
+            List<string> errors = new List<string>();
+            var item = _context.Items.Find(id);
+            if (item != null)
+            {
+              _context.Items.Remove(item);
+              await  _context.SaveChangesAsync();            
+            }
+            else
+            {
+                errors.Add("Item not found");             
+            }
+        }
+
     }
 }
