@@ -56,17 +56,23 @@ namespace WebApi.Controllers
         public async Task<IResponse> GetUser(string id)
         {
             UserResponse userResponse = new UserResponse();
-            Account account = await _context.Users.SingleAsync(x => x.Id == id);
+            Account account = await _context.Users.SingleOrDefaultAsync(x => x.Id == id);
 
-            IUserResponseModel userReturn = new UserResponseModel()
+            if (account == null)
             {
-                UserID = account.Id,
-                UserName = account.UserName,
-                UserEmail = account.Email,               
-            };
+                userResponse.User = null;
+            }
+            else
+            {
+                IUserResponseModel userReturn = new UserResponseModel()
+                {
+                    UserID = account.Id,
+                    UserName = account.UserName,
+                    UserEmail = account.Email,
+                };
 
-            userResponse.User = userReturn;
-
+                userResponse.User = userReturn;
+            }
             return userResponse;
         }
 
