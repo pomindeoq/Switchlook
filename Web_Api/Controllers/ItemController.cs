@@ -150,7 +150,7 @@ namespace WebApi.Controllers
             if (item != null)
             {
                 Account newOwnerAccount =
-                    await _userManager.FindByNameAsync(itemExchangeViewModel.NewOwnerAccountUserName);
+                    await _userManager.FindByIdAsync(itemExchangeViewModel.NewOwnerAccountId);
                 if (newOwnerAccount != null)
                 {
                     PointsModel points = await _context.Points.SingleOrDefaultAsync(x => x.Account == newOwnerAccount);
@@ -191,6 +191,7 @@ namespace WebApi.Controllers
             {
                 errors.Add("Item not found.");
             }
+            itemExchangeResponse.Errors = errors;
             return itemExchangeResponse;
         }
 
