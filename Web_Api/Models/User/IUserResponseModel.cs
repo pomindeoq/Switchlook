@@ -13,6 +13,6 @@ namespace WebApi.Models.User
 
         string UserEmail { get; set; }
 
-        double? UserPoints { get; set; }
+        double UserPoints { get; set; }
     }
 }

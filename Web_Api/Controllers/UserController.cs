@@ -38,20 +38,28 @@ namespace WebApi.Controllers
 
             var users = await _context.Users.ToListAsync();
 
-            IEnumerable<IUserResponseModel> usersReturn = users.Select(x => new UserResponseModel
-            {
-                UserId = x.Id,
-                UserName = x.UserName,
-                UserEmail = x.Email,
-                UserPoints = _context.Points.FirstOrDefault(y => y.Account.Id == x.Id) != null ? _context.Points.First(y => y.Account.Id == x.Id).Value : 0.0
+            var usersReturn = users.Select( x =>  SelectUserData(x));
 
-
-            });
+            //var things = await Task.WhenAll(usersReturn);
 
             usersResponse.Users = usersReturn;
 
             return usersResponse;
             
+        }
+
+        private IUserResponseModel SelectUserData(Account account)
+        {
+            UserResponseModel userResponseModel = new UserResponseModel();
+
+            userResponseModel.UserId = account.Id;
+            userResponseModel.UserEmail = account.Email;
+            userResponseModel.UserName = account.UserName;
+
+            PointsModel pointsModel = _context.Points.FirstOrDefault(x => x.Account.Id == account.Id);
+            userResponseModel.UserPoints = pointsModel != null ? pointsModel.Value : 0.0;
+
+            return userResponseModel;
         }
 
         [AllowAnonymous]
