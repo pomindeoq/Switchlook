@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.WindowsAzure.Storage.Blob.Protocol;
 using WebApi.Models;
 using WebApi.Models.Accounts;
 using WebApi.Models.Points;
@@ -54,14 +55,13 @@ namespace WebApi.Controllers
         [HttpPost, Route("addPoints")]
         public async Task<IResponse> AddPoints([FromBody]AddPointsModel addPointsModel)
         {
-            // ONLY FOR EVENT!!!
             AddPointsResponse addPointsResponse = new AddPointsResponse();
-            PointsModel points = await _context.Points.SingleOrDefaultAsync(x => x.Account.UserName == addPointsModel.UserName);
-            Account account = await _userManager.FindByNameAsync(addPointsModel.UserName);
+            PointsModel points = await _context.Points.SingleOrDefaultAsync(x => x.Account.Id == addPointsModel.UserId);
+            Account account = await _userManager.FindByIdAsync(addPointsModel.UserId);
             if (account == null)
             {
                 List<string> errors = new List<string>();
-                errors.Add("Username does not exist.");
+                errors.Add("User does not exist.");
                 addPointsResponse.Errors = errors;
             }
             else
@@ -71,7 +71,7 @@ namespace WebApi.Controllers
 
                     _context.Points.Add(new PointsModel { Account = account, Value = 0 });
                     await _context.SaveChangesAsync();
-                    points = await _context.Points.SingleOrDefaultAsync(x => x.Account.UserName == addPointsModel.UserName);
+                    points = await _context.Points.SingleOrDefaultAsync(x => x.Account.Id == addPointsModel.UserId);
                    
                 }
 
@@ -80,6 +80,50 @@ namespace WebApi.Controllers
                 _context.Points.Update(points);
                 await _context.SaveChangesAsync();
                 addPointsResponse.Succeeded = true;
+            }
+
+
+            return addPointsResponse;
+        }
+
+        [AllowAnonymous]
+        [HttpPost, Route("removePoints")]
+        public async Task<IResponse> RemovePoints([FromBody]AddPointsModel addPointsModel)
+        {
+            AddPointsResponse addPointsResponse = new AddPointsResponse();
+            PointsModel points = await _context.Points.SingleOrDefaultAsync(x => x.Account.Id == addPointsModel.UserId);
+            Account account = await _userManager.FindByIdAsync(addPointsModel.UserId);
+            List<string> errors = new List<string>();
+            if (account == null)
+            {
+                
+                errors.Add("User does not exist.");
+                addPointsResponse.Errors = errors;
+            }
+            else
+            {
+                if (points == null)
+                {
+
+                    _context.Points.Add(new PointsModel { Account = account, Value = 0 });
+                    await _context.SaveChangesAsync();
+                    points = await _context.Points.SingleOrDefaultAsync(x => x.Account.Id == addPointsModel.UserId);
+
+                }
+
+                if (points.Value >= addPointsModel.Value)
+                {
+                    points.Value = points.Value - addPointsModel.Value;
+
+                    _context.Points.Update(points);
+                    await _context.SaveChangesAsync();
+                    addPointsResponse.Succeeded = true;
+                }
+                else
+                {
+                    errors.Add("User doesn't have enough points");
+                }
+                
             }
 
 
