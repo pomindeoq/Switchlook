@@ -34,15 +34,18 @@ namespace WebApi.Controllers
         public async Task<IResponse> GetUsers()
         {
             UsersResponse usersResponse = new UsersResponse();
+                   
 
             var users = await _context.Users.ToListAsync();
 
             IEnumerable<IUserResponseModel> usersReturn = users.Select(x => new UserResponseModel
             {
-                UserID = x.Id,
+                UserId = x.Id,
                 UserName = x.UserName,
-                UserEmail = x.Email
-                         
+                UserEmail = x.Email,
+                UserPoints = _context.Points.FirstOrDefault(y => y.Account.Id == x.Id) != null ? _context.Points.First(y => y.Account.Id == x.Id).Value : 0.0
+
+
             });
 
             usersResponse.Users = usersReturn;
@@ -66,7 +69,7 @@ namespace WebApi.Controllers
             {
                 IUserResponseModel userReturn = new UserResponseModel()
                 {
-                    UserID = account.Id,
+                    UserId = account.Id,
                     UserName = account.UserName,
                     UserEmail = account.Email,
                 };

@@ -7,7 +7,7 @@ namespace WebApi.Models.User
 {
     public interface IUserResponseModel
     {
-        string UserID { get; set; }
+        string UserId { get; set; }
 
         string UserName { get; set; }
 
