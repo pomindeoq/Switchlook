@@ -111,7 +111,7 @@ namespace WebApi.Controllers
 
                 }
 
-                if (points.Value >= addPointsModel.Value)
+                if (points.Value >= addPointsModel.Value && !points.Value.Equals(0.0))
                 {
                     points.Value = points.Value - addPointsModel.Value;
 
@@ -125,7 +125,11 @@ namespace WebApi.Controllers
                 }
                 
             }
-
+            if (errors.Count > 0)
+            {
+                addPointsResponse.Errors = errors;
+            }
+            
 
             return addPointsResponse;
         }

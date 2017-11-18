@@ -75,13 +75,7 @@ namespace WebApi.Controllers
             }
             else
             {
-                IUserResponseModel userReturn = new UserResponseModel()
-                {
-                    UserId = account.Id,
-                    UserName = account.UserName,
-                    UserEmail = account.Email,
-                };
-
+                IUserResponseModel userReturn = SelectUserData(account);
                 userResponse.User = userReturn;
             }
             return userResponse;

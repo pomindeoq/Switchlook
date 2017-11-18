@@ -29,7 +29,7 @@ namespace WebApi
                 //    logging.AddDebug();
                 //})
                 .UseStartup<Startup>()
-                //.UseUrls("http://localhost:5050")
+                .UseUrls("http://localhost:54443")
                 .Build();
     }
 }

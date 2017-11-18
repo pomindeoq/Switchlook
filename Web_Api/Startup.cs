@@ -38,7 +38,7 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             // Database
-            var sqlConnectionString = "server=164.132.233.40;userid=switchlook;password=teoy3RroLKqqWpm0;database=switchlook;";
+            var sqlConnectionString = "server=164.132.233.40;userid=switchlook;password=teoy3RroLKqqWpm0;database=switchlookDev;";
             services.AddDbContext<WebApiDataContext>(options =>
                 options.UseMySql(
                     sqlConnectionString
