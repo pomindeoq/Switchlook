@@ -6,11 +6,11 @@ using WebApi.Models.Accounts;
 
 namespace WebApi.Models.Points
 {
-    public class PointTransactionModel
+    public class PointPurchaseTransactionModel
     {
         public Account Account { get; set; }
-        public double PreviousAmount { get; set; }
-        public double NewAmount { get; set; }
+        public PointTransactionModel Transaction { get; set; }
+        public double Price { get; set; }
         public DateTime DateTime { get; set; }
     }
 }
