@@ -22,7 +22,6 @@ namespace WebApi.Models.Points
             {
                 points.Value = points.Value + pointValue;
                 _context.Points.Update(points);
-                await _context.SaveChangesAsync();
             }
         }
     }

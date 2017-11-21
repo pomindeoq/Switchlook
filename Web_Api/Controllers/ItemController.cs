@@ -115,16 +115,18 @@ namespace WebApi.Controllers
                 await addPoints.ToUserAsync(item.OwnerAccount, item.PointValue);
 
                 _context.Items.Add(item);
+
+                await _context.SaveChangesAsync();
+
                 itemIds.Add(item.Id);
             }
 
-            
-            await _context.SaveChangesAsync();
+            CreateItemsResponse createItemsResponse = new CreateItemsResponse();
+            createItemsResponse.ItemIds = itemIds;
 
-            CreateItemsResponse createItemsResponse = new CreateItemsResponse
-            {
-                ItemIds = itemIds
-            };
+            
+
+            
 
             return createItemsResponse;
         }
