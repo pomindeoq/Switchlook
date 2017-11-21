@@ -22,6 +22,5 @@ namespace WebApi.Models
         public DbSet<Item> Items { get; set; } 
         public DbSet<PointsModel> Points { get; set; }
         public DbSet<ItemExchangeModel> ItemExchangeLog { get; set; }
-        public DbSet<PointTransactionModel> PointTransactionLog { get; set; }
     }
 }
