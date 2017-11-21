@@ -79,7 +79,7 @@ namespace WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost, Route("createItem")]
-        public async Task CreateItem([FromBody] CreateItemModel createItemModel)
+        public async Task<IActionResult> CreateItem([FromBody] CreateItemModel createItemModel)
         {
             Item item = new Item();
             item.OwnerAccount = await _userManager.FindByIdAsync(createItemModel.UserId);
@@ -91,7 +91,44 @@ namespace WebApi.Controllers
 
             _context.Items.Add(item);
             await _context.SaveChangesAsync();
+
+            dynamic response = new
+            {
+                itemId = item.Id
+            };
+            return Ok(response);
         }
+
+        [AllowAnonymous]
+        [HttpPost, Route("createItems")]
+        public async Task<IActionResult> CreateItems([FromBody] CreateItemsModel createItemsModels)
+        {
+            List<int> itemIds = new List<int>();
+            foreach (double pointValue in createItemsModels.PointValues)
+            {
+                Item item = new Item();
+                item.OwnerAccount = await _userManager.FindByIdAsync(createItemsModels.UserId);
+                item.Category = await _context.ItemCategories.SingleAsync(x => x.Id == createItemsModels.CategoryId);
+                item.PointValue = pointValue;
+
+                AddPoints addPoints = new AddPoints(_context);
+                await addPoints.ToUserAsync(item.OwnerAccount, item.PointValue);
+
+                _context.Items.Add(item);
+                itemIds.Add(item.Id);
+            }
+
+            
+            await _context.SaveChangesAsync();
+
+            dynamic response = new
+            {
+                itemIds
+            };
+            return Ok(response);
+        }
+
+
 
         [AllowAnonymous]
         [HttpPost, Route("createItemCategory")]
