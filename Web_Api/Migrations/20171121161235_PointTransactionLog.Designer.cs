@@ -11,9 +11,10 @@ using WebApi.Models;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(WebApiDataContext))]
-    partial class WebApiDataContextModelSnapshot : ModelSnapshot
+    [Migration("20171121161235_PointTransactionLog")]
+    partial class PointTransactionLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,28 +236,6 @@ namespace WebApi.Migrations
                     b.ToTable("ItemExchangeLog");
                 });
 
-            modelBuilder.Entity("WebApi.Models.Points.PointPurchaseTransactionModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AccountId");
-
-                    b.Property<DateTime>("DateTime");
-
-                    b.Property<double>("Price");
-
-                    b.Property<int?>("TransactionId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("TransactionId");
-
-                    b.ToTable("PointPurchaseTransactionLog");
-                });
-
             modelBuilder.Entity("WebApi.Models.Points.PointsModel", b =>
                 {
                     b.Property<int>("Id")
@@ -362,17 +341,6 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Models.Accounts.Account", "OldOwnerAccount")
                         .WithMany()
                         .HasForeignKey("OldOwnerAccountId");
-                });
-
-            modelBuilder.Entity("WebApi.Models.Points.PointPurchaseTransactionModel", b =>
-                {
-                    b.HasOne("WebApi.Models.Accounts.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId");
-
-                    b.HasOne("WebApi.Models.Points.PointTransactionModel", "Transaction")
-                        .WithMany()
-                        .HasForeignKey("TransactionId");
                 });
 
             modelBuilder.Entity("WebApi.Models.Points.PointsModel", b =>
