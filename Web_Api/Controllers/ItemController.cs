@@ -101,7 +101,7 @@ namespace WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost, Route("createItems")]
-        public async Task<IActionResult> CreateItems([FromBody] CreateItemsModel createItemsModels)
+        public async Task<IResponse> CreateItems([FromBody] CreateItemsModel createItemsModels)
         {
             List<int> itemIds = new List<int>();
             foreach (double pointValue in createItemsModels.PointValues)
@@ -121,11 +121,12 @@ namespace WebApi.Controllers
             
             await _context.SaveChangesAsync();
 
-            dynamic response = new
+            CreateItemsResponse createItemsResponse = new CreateItemsResponse
             {
-                itemIds
+                ItemIds = itemIds
             };
-            return Ok(response);
+
+            return createItemsResponse;
         }
 
 
