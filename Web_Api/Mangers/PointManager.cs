@@ -56,7 +56,7 @@ namespace WebApi.Mangers
                         PointTransactionModel pointTransactionModel = new PointTransactionModel();
                         pointTransactionModel.Account = account;
                         pointTransactionModel.PreviousAmount = points.Value;
-                        pointTransactionModel.NewAmount = pointValue - points.Value;
+                        pointTransactionModel.NewAmount = points.Value - pointValue;
                         pointTransactionModel.DateTime = DateTime.Now;
 
                         _context.PointTransactionLog.Add(pointTransactionModel);
@@ -71,6 +71,27 @@ namespace WebApi.Mangers
                 }
             }
             return (false, null);
+        }
+
+        public async Task<bool> PurchasePoints(Account account, double amount, double price)
+        {
+            var result = await AddToUserAsync(account, amount);
+            if (result.succeeded)
+            {
+                PointPurchaseTransactionModel pointPurchaseTransaction = new PointPurchaseTransactionModel
+                {
+                    Account = account,
+                    Price = price,
+                    Transaction = result.pointTransaction,
+                    DateTime = DateTime.Now
+                };
+
+                _context.PointPurchaseTransactionLog.Add(pointPurchaseTransaction);
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            return false;
         }
     }
 }

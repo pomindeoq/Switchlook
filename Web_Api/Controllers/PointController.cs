@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -78,16 +79,44 @@ namespace WebApi.Controllers
                    
                 }
 
-                await _pointManager.AddToUserAsync(account, addPointsModel.Value);
-
-                points.Value = points.Value + addPointsModel.Value;
-
-                _context.Points.Update(points);
-                await _context.SaveChangesAsync();
-                addPointsResponse.Succeeded = true;
+                var result = await _pointManager.AddToUserAsync(account, addPointsModel.Value);
+                double test = result.pointTransaction.Amount;
+                addPointsResponse.Succeeded = result.succeeded;
+                
             }
 
 
+            return addPointsResponse;
+        }
+
+        [AllowAnonymous]
+        [HttpPost, Route("buyPoints")]
+        public async Task<IResponse> BuyPoints([FromBody]BuyPointsModel buyPointsModel)
+        {
+            AddPointsResponse addPointsResponse = new AddPointsResponse();
+            PointsModel points = await _context.Points.SingleOrDefaultAsync(x => x.Account.Id == buyPointsModel.UserId);
+            Account account = await _userManager.FindByIdAsync(buyPointsModel.UserId);
+            if (account == null)
+            {
+                List<string> errors = new List<string>();
+                errors.Add("User does not exist.");
+                addPointsResponse.Errors = errors;
+            }
+            else
+            {
+                if (points == null)
+                {
+
+                    _context.Points.Add(new PointsModel { Account = account, Value = 0 });
+                    await _context.SaveChangesAsync();
+                    points = await _context.Points.SingleOrDefaultAsync(x => x.Account.Id == buyPointsModel.UserId);
+
+                }
+
+                var result = await _pointManager.PurchasePoints(account, buyPointsModel.Value, buyPointsModel.Price);
+                addPointsResponse.Succeeded = result;
+
+            }
             return addPointsResponse;
         }
 
@@ -118,13 +147,8 @@ namespace WebApi.Controllers
 
                 if (points.Value >= addPointsModel.Value && !points.Value.Equals(0.0))
                 {
-                    points.Value = points.Value - addPointsModel.Value;
-
-                    _context.Points.Update(points);
-                    await _context.SaveChangesAsync();
-
                     var result = await _pointManager.RemoveFromUserAsync(account, addPointsModel.Value);
-
+                    double test = result.pointTransaction.Amount;
                     if (result.succeeded)
                     {
                         addPointsResponse.Succeeded = true;
