@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Blob.Protocol;
+using WebApi.Mangers;
 using WebApi.Models;
 using WebApi.Models.Accounts;
 using WebApi.Models.Points;
@@ -23,11 +24,13 @@ namespace WebApi.Controllers
 
         private readonly WebApiDataContext _context;
         private readonly UserManager<Account> _userManager;
+        private readonly PointManager _pointManager;
 
-        public PointController(WebApiDataContext context, UserManager<Account> userManager)
+        public PointController(WebApiDataContext context, UserManager<Account> userManager, PointManager pointManager)
         {
             _context = context;
             _userManager = userManager;
+            _pointManager = pointManager;
         }
 
         [AllowAnonymous]
@@ -75,6 +78,8 @@ namespace WebApi.Controllers
                    
                 }
 
+                await _pointManager.AddToUserAsync(account, addPointsModel.Value);
+
                 points.Value = points.Value + addPointsModel.Value;
 
                 _context.Points.Update(points);
@@ -117,7 +122,17 @@ namespace WebApi.Controllers
 
                     _context.Points.Update(points);
                     await _context.SaveChangesAsync();
-                    addPointsResponse.Succeeded = true;
+
+                    var result = await _pointManager.RemoveFromUserAsync(account, addPointsModel.Value);
+
+                    if (result.succeeded)
+                    {
+                        addPointsResponse.Succeeded = true;
+                    }
+                    else
+                    {
+                        errors.Add("Action failed.");
+                    }
                 }
                 else
                 {
