@@ -19,6 +19,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MySql.Data.MySqlClient;
 using NetEscapades.AspNetCore.SecurityHeaders;
+using WebApi.Mangers;
 using WebApi.Models;
 using WebApi.Models.Accounts;
 
@@ -82,6 +83,8 @@ namespace WebApi
                     return Task.CompletedTask;
                 };
             });
+
+            services.AddTransient<PointManager>();
 
             services.AddLogging();
 

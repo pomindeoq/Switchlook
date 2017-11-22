@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Mangers;
 using WebApi.Models;
 using WebApi.Models.Accounts;
 using WebApi.Models.ItemCategories;
@@ -22,13 +23,15 @@ namespace WebApi.Controllers
     [Route("api/Item")]
     public class ItemController : Controller
     {
-        private WebApiDataContext _context;
+        private readonly WebApiDataContext _context;
         private readonly UserManager<Account> _userManager;
+        private readonly PointManager _pointManager;
 
-        public ItemController(WebApiDataContext context, UserManager<Account> userManager)
+        public ItemController(WebApiDataContext context, UserManager<Account> userManager, PointManager pointManager)
         {
             _context = context;
             _userManager = userManager;
+            _pointManager = pointManager;
         }
 
         [AllowAnonymous]
@@ -86,8 +89,7 @@ namespace WebApi.Controllers
             item.Category = await _context.ItemCategories.SingleAsync(x => x.Id == createItemModel.CategoryId);
             item.PointValue = createItemModel.PointValue;
 
-            AddPoints addPoints = new AddPoints(_context);
-            await addPoints.ToUserAsync(item.OwnerAccount, item.PointValue);
+            await _pointManager.AddToUserAsync(item.OwnerAccount, item.PointValue);
 
             _context.Items.Add(item);
             await _context.SaveChangesAsync();
@@ -111,8 +113,7 @@ namespace WebApi.Controllers
                 item.Category = await _context.ItemCategories.SingleAsync(x => x.Id == createItemsModels.CategoryId);
                 item.PointValue = pointValue;
 
-                AddPoints addPoints = new AddPoints(_context);
-                await addPoints.ToUserAsync(item.OwnerAccount, item.PointValue);
+                await _pointManager.AddToUserAsync(item.OwnerAccount, item.PointValue);
 
                 _context.Items.Add(item);
 
@@ -123,10 +124,6 @@ namespace WebApi.Controllers
 
             CreateItemsResponse createItemsResponse = new CreateItemsResponse();
             createItemsResponse.ItemIds = itemIds;
-
-            
-
-            
 
             return createItemsResponse;
         }
@@ -196,8 +193,7 @@ namespace WebApi.Controllers
                     PointsModel points = await _context.Points.SingleOrDefaultAsync(x => x.Account == newOwnerAccount);
                     if (points.Value >= itemExchangeViewModel.PointValue)
                     {
-                        AddPoints addPoints = new AddPoints(_context);
-                        await addPoints.ToUserAsync(newOwnerAccount, -itemExchangeViewModel.PointValue);
+                        await _pointManager.AddToUserAsync(newOwnerAccount, -itemExchangeViewModel.PointValue);
 
                         Account oldOwnerAccount = item.OwnerAccount;
                         item.OwnerAccount = newOwnerAccount;
