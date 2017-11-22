@@ -227,7 +227,15 @@ namespace WebApi.Controllers
             {
                 errors.Add("Item not found.");
             }
-            itemExchangeResponse.Errors = errors;
+            if (errors.Count > 0)
+            {
+                itemExchangeResponse.Errors = errors;
+            }
+            else
+            {
+                itemExchangeResponse.Errors = null;
+            }
+            
             return itemExchangeResponse;
         }
 
