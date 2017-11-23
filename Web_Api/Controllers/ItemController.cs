@@ -193,7 +193,7 @@ namespace WebApi.Controllers
                     PointsModel points = await _context.Points.SingleOrDefaultAsync(x => x.Account == newOwnerAccount);
                     if (points.Value >= itemExchangeViewModel.PointValue)
                     {
-                        await _pointManager.AddToUserAsync(newOwnerAccount, -itemExchangeViewModel.PointValue);
+                        await _pointManager.RemoveFromUserAsync(newOwnerAccount, itemExchangeViewModel.PointValue);
 
                         Account oldOwnerAccount = item.OwnerAccount;
                         item.OwnerAccount = newOwnerAccount;
@@ -212,11 +212,13 @@ namespace WebApi.Controllers
                         ItemExchange itemExchange = new ItemExchange(_context);
                         itemExchange.Set(itemExchangeModel);
                         itemExchangeResponse = await itemExchange.CommitAsync();
+                        errors.Add("Item checked out successfully");
                     }
                     else
                     {
                         errors.Add($"Not enough points for user :{newOwnerAccount.UserName}");
                     }  
+                
                 }
                 else
                 {
@@ -226,7 +228,7 @@ namespace WebApi.Controllers
             else
             {
                 errors.Add("Item not found.");
-            }
+            }           
             if (errors.Count > 0)
             {
                 itemExchangeResponse.Errors = errors;
@@ -235,6 +237,7 @@ namespace WebApi.Controllers
             {
                 itemExchangeResponse.Errors = null;
             }
+            
             
             return itemExchangeResponse;
         }

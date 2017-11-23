@@ -33,14 +33,12 @@ namespace WebApi.Controllers
         [HttpGet, Route("getUsers")]
         public async Task<IResponse> GetUsers()
         {
-            UsersResponse usersResponse = new UsersResponse();
-                   
+            
+           UsersResponse usersResponse = new UsersResponse();                   
 
             var users = await _context.Users.ToListAsync();
-
-            var usersReturn = users.Select( x =>  SelectUserData(x));
-
-            //var things = await Task.WhenAll(usersReturn);
+         
+            var usersReturn = users.Select( x =>  SelectUserData(x));            
 
             usersResponse.Users = usersReturn;
 
